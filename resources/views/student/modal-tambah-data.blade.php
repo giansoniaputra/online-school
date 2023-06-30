@@ -1,0 +1,157 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-siswa" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title-modal"></h5>
+                <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="javascript:;">
+                    {{-- HIDDEN INPUT --}}
+                    <input type="text" name="unique" id="unique">
+                    <input type="text" name="_method" id="method">
+                    @csrf
+                    {{-- ./HIDDEN INPUT --}}
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="nisn">NISN</label>
+                                <input type="text" class="form-control" id="nisn" name="nisn">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="nis">NIS</label>
+                                <input type="text" class="form-control" id="nis" name="nis">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="nama">Nama Siswa</label>
+                                <input type="text" class="form-control" id="nama" name="nama">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="tempat_lahir">Tempat Lahir</label>
+                                <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="tanggal_lahir">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="jenis_kelamin">Gender</label>
+                                <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                    <option selected disabled value="">Pilih Jenis Kelamin...</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perembuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="alamat">Alamat</label>
+                                <textarea class="form-control" name="alamat" id="alamat" row pl-3 pr-3s="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="asal_sekolah">Asal Sekolah</label>
+                                <input type="text" class="form-control" name="asal_sekolah" id="asal_sekolah">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="agama">Agama</label>
+                                <select class="form-control" name="agama" id="agama">
+                                    <option selected disabled value="">Pilih Agama Siswa...</option>
+                                    <option value="ISLAM">ISLAM</option>
+                                    <option value="KRISTEN">KRISTEN</option>
+                                    <option value="PROTESTAN">PROTESTAN</option>
+                                    <option value="HINDU">HINDU</option>
+                                    <option value="BUDHA">BUDHA</option>
+                                    <option value="KONGHUCHU">KONGHUCHU</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="kelas">Kelas</label>
+                                <select class="form-control" name="kelas" id="kelas">
+                                    <option selected disabled value="">Pilih Kelas Siswa...</option>
+                                    <option value="7A">7A</option>
+                                    <option value="7B">7B</option>
+                                    <option value="8A">8A</option>
+                                    <option value="8B">8B</option>
+                                    <option value="9A">9A</option>
+                                    <option value="9B">9B</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="ayah">Ayah</label>
+                                <input type="text" class="form-control" id="ayah" name="ayah">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="ibu">Ibu</label>
+                                <input type="text" class="form-control" id="ibu" name="ibu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
+                                <input type="text" class="form-control" id="pekerjaan_ayah" name="pekerjaan_ayah">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
+                                <input type="text" class="form-control" id="pekerjaan_ibu" name="pekerjaan_ibu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pl-3 pr-3">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="wali">Wali</label>
+                                <input type="text" class="form-control" id="wali" name="wali">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="pekerjaan_wali">Pekerjaan Wali</label>
+                                <input type="text" class="form-control" id="pekerjaan_wali" name="pekerjaan_wali">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" id="btn-action"></div>
+        </div>
+    </div>
+</div>

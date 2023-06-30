@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,8 @@ Route::get('/', function () {
     ];
     return view('dashboard.index', $data);
 });
+//SISWA
+Route::resource('student', StudentController::class);
+
+//DATATABLES
+Route::get('/datatablesSiswa', [StudentController::class, 'dataTables']);
