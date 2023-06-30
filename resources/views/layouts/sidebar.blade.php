@@ -49,6 +49,22 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/absen" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            BAP
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/matpel" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Mata Pelajaran
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
