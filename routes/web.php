@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\MatpelController;
 use App\Http\Controllers\StudentController;
@@ -23,18 +24,36 @@ Route::get('/', function () {
         'title' => 'Dashborad',
     ];
     return view('dashboard.index', $data);
-});
+})->middleware('auth');
+Route::get('/home', function () {
+    $data = [
+        'title_page' => 'Dashborad',
+        'title' => 'Dashborad',
+    ];
+    return view('dashboard.index', $data);
+})->middleware('auth');
+
+Route::post('/authenticate', [AuthController::class, 'authenticate']);
+Route::get('/auth', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::get('/logout', [AuthController::class, 'logout']);
+
 //SISWA
-Route::resource('/student', StudentController::class);
+Route::resource('/student', StudentController::class)->middleware('auth');
 //GURU
-Route::resource('/teacher', TeacherController::class);
+Route::resource('/teacher', TeacherController::class)->middleware('auth');
+//Refresh Ampuan
+Route::get('/refresh_ampuan', [TeacherController::class, 'refresh_ampuan'])->middleware('auth');
+//Tambah dan Hapus Ampuan
+Route::get('/tambah_ampuan', [TeacherController::class, 'tambah_ampuan'])->middleware('auth');
+Route::get('/hapus_ampuan', [TeacherController::class, 'hapus_ampuan'])->middleware('auth');
 //MATA PELAJARAN
-Route::resource('/matpel', MatpelController::class);
+Route::resource('/matpel', MatpelController::class)->middleware('auth');
 //ABSEN
-Route::resource('/absen', AbsenController::class);
+Route::resource('/absen', AbsenController::class)->middleware('auth');
 
 //DATATABLES
-Route::get('/datatablesSiswa', [StudentController::class, 'dataTables']);
-Route::get('/datatablesAbsen', [AbsenController::class, 'dataTables']);
-Route::get('/datatablesGuru', [TeacherController::class, 'dataTables']);
-Route::get('/datatablesMatpel', [MatpelController::class, 'dataTables']);
+Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesAbsen', [AbsenController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesGuru', [TeacherController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesMatpel', [MatpelController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesBAP', [AbsenController::class, 'dataTablesBAP'])->middleware('auth');

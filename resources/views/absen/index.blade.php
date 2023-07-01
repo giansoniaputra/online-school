@@ -13,8 +13,46 @@
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                <h3>Konten Tab 1</h3>
-                <p>Ini adalah konten dari Tab 1.</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header" id="tambah-bap">
+                                <form action="">
+                                    <div class="row">
+                                        <div class="input-group mb-1 col-sm-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Pertemuan Ke-</span>
+                                            </div>
+                                            <input type="number" class="form-control" name="bap" id="bap">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button type="button" class="btn btn-md btn-primary" id="btn-add-bap">Tambah BAP</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="table-bap" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Pertemuan</th>
+                                            <th>Tanggal BAP</th>
+                                            <th>Berita Acara</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
             </div>
             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <div class="row">
