@@ -23,7 +23,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Pertemuan Ke-</span>
                                             </div>
-                                            <input type="number" class="form-control" name="bap" id="bap">
+                                            <input type="number" class="form-control" name="bap_per" id="bap_per">
                                         </div>
                                         <div class="col-sm-6">
                                             <button type="button" class="btn btn-md btn-primary" id="btn-add-bap">Tambah BAP</button>
@@ -92,6 +92,7 @@
         </div>
     </div>
 </div>
+@include('absen.modal-tambah-bap')
 <!-- /.row -->
 {{-- Modal Siswa --}}
 <script src="/page-script/absen.js"></script>

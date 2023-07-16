@@ -14,7 +14,7 @@
                 <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <p class="d-block text-white">Gian Sonia <span>(Guru)</span></p>
+                <p class="d-block text-white">{{ auth()->user()->nama }} <span>({{ auth()->user()->role }})</span></p>
             </div>
         </div>
 

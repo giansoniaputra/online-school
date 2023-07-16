@@ -48,8 +48,12 @@ Route::get('/tambah_ampuan', [TeacherController::class, 'tambah_ampuan'])->middl
 Route::get('/hapus_ampuan', [TeacherController::class, 'hapus_ampuan'])->middleware('auth');
 //MATA PELAJARAN
 Route::resource('/matpel', MatpelController::class)->middleware('auth');
+
 //ABSEN
 Route::resource('/absen', AbsenController::class)->middleware('auth');
+//ambil data BAP
+Route::get('/getCurrentBAP', [AbsenController::class, 'get_current_BAP'])->middleware('auth');
+Route::get('/deletBAP', [AbsenController::class, 'deleteBAP'])->middleware('auth');
 
 //DATATABLES
 Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
