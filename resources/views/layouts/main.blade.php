@@ -1,10 +1,14 @@
+@php
+use App\Models\TahunAjaran;
+$tahun = TahunAjaran::where('status', '1')->first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title_page }} | DataTables</title>
+    <title>{{ $title_page }} | Online School</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,15 +37,12 @@
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
-            <ul class="navbar-nav">
+            <ul class="navbar-nav d-flex justify-conten-center align-items-center">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <button class="badge bg-warning border-0 text-white">Tahun Ajaran: <span id="tahun-aktif">{{ $tahun->tahun_awal }}/{{ $tahun->tahun_akhir }}&nbsp;{{ $tahun->periode }} <input type="hidden" id="input-tahun-ajaran-aktif" value="{{ $tahun->unique }}"></span></button>
                 </li>
             </ul>
 

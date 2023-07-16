@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('unique')->unique();
             $table->string('student_unique');
             $table->string('bap_unique');
+            $table->string('tahun_ajaran_unique');
             $table->date('tanggal_absen');
             $table->string('kehadiran');
             $table->timestamps();

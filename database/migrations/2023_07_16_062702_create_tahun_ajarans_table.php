@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('tahun_ajarans', function (Blueprint $table) {
             $table->id();
+            $table->uuid('unique')->unique();
+            $table->string('tahun_awal');
+            $table->string('tahun_akhir');
+            $table->string('periode');
+            $table->string('status');
             $table->timestamps();
         });
     }
