@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absens', function (Blueprint $table) {
+        Schema::create('kelas', function (Blueprint $table) {
             $table->id();
             $table->uuid('unique')->unique();
-            $table->string('student_unique');
-            $table->string('student_kelas');
-            $table->string('bap_unique');
-            $table->string('tahun_ajaran_unique');
-            $table->date('tanggal_absen');
-            $table->string('kehadiran');
+            $table->string('kelas');
+            $table->string('huruf');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absens');
+        Schema::dropIfExists('kelas');
     }
 };
