@@ -4,7 +4,13 @@ $(document).ready(function () {
         lengthChange: false,
         autoWidth: false,
         serverSide: true,
-        ajax: "/datatablesAbsen",
+        ajax: {
+            url: "/datatablesAbsen",
+            type: "GET",
+            data: function (d) {
+                d.unique = $("#bap_unique_now").val();
+            },
+        },
         columns: [
             {
                 data: null,
@@ -19,7 +25,7 @@ $(document).ready(function () {
                 data: "nama",
             },
             {
-                data: "kelas",
+                data: "kelas2",
             },
             {
                 data: "kehadiran",
@@ -70,12 +76,17 @@ $(document).ready(function () {
             {
                 data: "bap",
             },
+            {
+                data: "action",
+                orderable: true,
+                searchable: true,
+            },
         ],
         columnDefs: [
-            // {
-            //     targets: [5], // index kolom atau sel yang ingin diatur
-            //     className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
-            // },
+            {
+                targets: [5], // index kolom atau sel yang ingin diatur
+                className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
+            },
             {
                 searchable: false,
                 orderable: false,
@@ -226,6 +237,29 @@ $(document).ready(function () {
                     },
                 });
             }
+        });
+    });
+    //Mulai Absen
+    $("#table-bap").on("click", ".absen-button", function () {
+        $("#tab1-tab").removeClass("active");
+        $("#tab2-tab").addClass("active");
+        $("#tab1").removeClass("show active");
+        $("#tab2").addClass("show active");
+        let unique_bap = $(this).attr("data-unique");
+        let tahun_ajaran = $("#input-tahun-ajaran-aktif").val();
+
+        $.ajax({
+            data: {
+                unique_bap: unique_bap,
+                tahun_ajaran: tahun_ajaran,
+            },
+            url: "/inputAbsen",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                $("#bap_unique_now").val(response.data.unique);
+                table.ajax.reload();
+            },
         });
     });
     //Hendler Error

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kelas;
 use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,6 +21,7 @@ class StudentController extends Controller
         $data = [
             'title_page' => 'Siswa',
             'title' => 'Data Siswa',
+            'kelas' => Kelas::all(),
         ];
         return view('student.index', $data);
     }
@@ -178,7 +181,13 @@ class StudentController extends Controller
     public function dataTables(Request $request)
     {
         if ($request->ajax()) {
-            $query = Student::all();
+            $query = DB::table('students as a')
+                ->join('kelas as b', 'a.kelas', '=', 'b.unique')
+                ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
+                ->get();
+            foreach ($query as $row) {
+                $row->kelas2 = $row->kelas2 . $row->huruf;
+            }
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '

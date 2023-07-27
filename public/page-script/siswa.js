@@ -25,7 +25,7 @@ $(document).ready(function () {
                 data: "nama",
             },
             {
-                data: "kelas",
+                data: "kelas2",
             },
             {
                 data: "action",

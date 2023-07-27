@@ -97,12 +97,9 @@
                                 <label for="kelas">Kelas</label>
                                 <select class="form-control" name="kelas" id="kelas">
                                     <option selected disabled value="">Pilih Kelas Siswa...</option>
-                                    <option value="7A">7A</option>
-                                    <option value="7B">7B</option>
-                                    <option value="8A">8A</option>
-                                    <option value="8B">8B</option>
-                                    <option value="9A">9A</option>
-                                    <option value="9B">9B</option>
+                                    @foreach ($kelas as $row)
+                                    <option value="{{ $row->unique }}">{{ $row->kelas.$row->huruf }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

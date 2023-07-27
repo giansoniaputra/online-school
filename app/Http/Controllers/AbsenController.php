@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BAP;
 use App\Models\Absen;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -132,7 +133,16 @@ class AbsenController extends Controller
     public function dataTables(Request $request)
     {
         if ($request->ajax()) {
-            $query = Absen::all();
+            $query = DB::table('absens as a')
+                ->join('students as b', 'a.student_unique', "=", "b.unique")
+                ->join('kelas as c', 'b.kelas', "=", "c.unique")
+                ->select("a.*", "b.nama", "c.kelas as kelas2", "c.huruf")
+                ->where('a.unique', $request->unique)
+                ->get();
+
+            foreach ($query as $row) {
+                $row->kelas2 = $row->kelas2 . $row->huruf;
+            }
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
@@ -155,7 +165,12 @@ class AbsenController extends Controller
                 $row->pengampu = $row->nama_matpel . ' - ' . $row->kelas;
                 $row->tanggal_bap = tanggal_hari($row->tanggal_bap, true);
             }
-            return DataTables::of($query)->make(true);
+            return DataTables::of($query)->addColumn('action', function ($row) {
+                $actionBtn =
+                    '
+                    <button class="btn btn-rounded btn-sm btn-primary text-white absen-button" title="Absen Siswa" data-unique="' . $row->unique . '">Absen</button>';
+                return $actionBtn;
+            })->make(true);
         }
     }
 
@@ -169,6 +184,33 @@ class AbsenController extends Controller
             return response()->json(['success' => $query]);
         } else {
             return response()->json(['error' => 'Invalid']);
+        }
+    }
+
+    public function input_absen(Request $request)
+    {
+        $siswa = DB::table('students as a')
+            ->join('kelas as b', 'a.kelas', '=', 'b.unique')
+            ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
+            ->get();
+        $cek = Absen::where('bap_unique', $request->unique_bap)->first();
+        $bap = BAP::where('unique', $request->unique_bap)->first();
+        if ($cek) {
+            return response()->json(['data' => $cek]);
+        } else {
+            foreach ($siswa as $row) {
+                $data = [
+                    'unique' => Str::orderedUuid(),
+                    'student_unique' => $row->unique,
+                    'student_kelas' => $row->kelas . $row->huruf,
+                    'bap_unique' => $bap->unique,
+                    'tahun_ajaran_unique' => $request->tahun_ajaran,
+                    'tanggal_absen' => $bap->tanggal_bap,
+                    'kehadiran' => 'A',
+                ];
+                Absen::create($data);
+            }
+            return response()->json(['data' => Absen::latest()->first()]);
         }
     }
 }

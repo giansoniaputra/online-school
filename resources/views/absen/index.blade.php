@@ -41,6 +41,7 @@
                                             <th>Pertemuan</th>
                                             <th>Tanggal BAP</th>
                                             <th>Berita Acara</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,12 +60,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                {{-- <div class="input-group mb-1 col-sm-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Pilih Tanggal</span>
-                                    </div>
-                                    <input type="date" class="form-control" placeholder="Username">
-                                </div> --}}
+                                <div class="input-group mb-1 col-sm-3">
+                                    <input type="text" id="bap_unique_now">
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
