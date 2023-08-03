@@ -137,7 +137,7 @@ class AbsenController extends Controller
                 ->join('students as b', 'a.student_unique', "=", "b.unique")
                 ->join('kelas as c', 'b.kelas', "=", "c.unique")
                 ->select("a.*", "b.nama", "c.kelas as kelas2", "c.huruf")
-                ->where('a.unique', $request->unique)
+                ->where('a.bap_unique', $request->unique)
                 ->get();
 
             foreach ($query as $row) {
@@ -146,8 +146,9 @@ class AbsenController extends Controller
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
-                    <button class="btn btn-rounded btn-sm btn-info text-white hadir-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">H</button>
-                    <button class="btn btn-rounded btn-sm btn-warning text-dark sakit-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">S</button>
+                    <button class="btn btn-rounded btn-sm btn-primary text-white hadir-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">H</button>
+                    <button class="btn btn-rounded btn-sm btn-info text-white sakit-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">S</button>
+                    <button class="btn btn-rounded btn-sm btn-warning text-dark izin-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">I</button>
                     <button class="btn btn-rounded btn-sm btn-danger text-white alfa-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '">A</button>';
                 return $actionBtn;
             })->make(true);
@@ -212,5 +213,30 @@ class AbsenController extends Controller
             }
             return response()->json(['data' => Absen::latest()->first()]);
         }
+    }
+
+    //Absen Hadir
+    public function absen_hadir(Request $request)
+    {
+        Absen::where('unique', $request->unique)->update(['kehadiran' => "H"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+    //Absen SAKIT
+    public function absen_sakit(Request $request)
+    {
+        Absen::where('unique', $request->unique)->update(['kehadiran' => "S"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+    //Absen Izin
+    public function absen_izin(Request $request)
+    {
+        Absen::where('unique', $request->unique)->update(['kehadiran' => "I"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+    //Absen Hadir
+    public function absen_alfa(Request $request)
+    {
+        Absen::where('unique', $request->unique)->update(['kehadiran' => "A"]);
+        return response()->json(['success' => 'Berhasil']);
     }
 }

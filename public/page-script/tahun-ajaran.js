@@ -31,7 +31,7 @@ $(document).ready(function () {
                 render: function (data, type, row, meta) {
                     if (data == "1") {
                         return type === "display"
-                            ? '<button class="badge bg-success border-0">Aktif</button>'
+                            ? '<button class="btn btn-success border-0">Aktif</button>'
                             : data;
                     } else {
                         return type === "display"

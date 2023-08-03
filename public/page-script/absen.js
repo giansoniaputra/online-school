@@ -2,8 +2,10 @@ $(document).ready(function () {
     let table = $("#table-absen").DataTable({
         responsive: true,
         lengthChange: false,
+        processing: true,
         autoWidth: false,
         serverSide: true,
+        paging: false,
         ajax: {
             url: "/datatablesAbsen",
             type: "GET",
@@ -38,6 +40,10 @@ $(document).ready(function () {
         ],
         columnDefs: [
             {
+                targets: [3], // index kolom atau sel yang ingin diatur
+                className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
+            },
+            {
                 targets: [4], // index kolom atau sel yang ingin diatur
                 className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
             },
@@ -51,6 +57,7 @@ $(document).ready(function () {
     let table2 = $("#table-bap").DataTable({
         responsive: true,
         lengthChange: false,
+        processing: true,
         autoWidth: false,
         serverSide: true,
         ajax: "/datatablesBAP",
@@ -257,7 +264,60 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
-                $("#bap_unique_now").val(response.data.unique);
+                $("#bap_unique_now").val(response.data.bap_unique);
+                table.ajax.reload();
+            },
+        });
+    });
+
+    //JIKA HADIR
+    $("#table-absen").on("click", ".hadir-siswa-button", function () {
+        let unique = $(this).attr("data-unique");
+        $.ajax({
+            data: { unique: unique },
+            url: "/absenHadir",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                table.ajax.reload();
+            },
+        });
+    });
+    //JIKA SAKIT
+    $("#table-absen").on("click", ".sakit-siswa-button", function () {
+        let unique = $(this).attr("data-unique");
+        $.ajax({
+            data: { unique: unique },
+            url: "/absenSakit",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                table.ajax.reload();
+            },
+        });
+    });
+    //JIKA IZIN
+    $("#table-absen").on("click", ".izin-siswa-button", function () {
+        let unique = $(this).attr("data-unique");
+        $.ajax({
+            data: { unique: unique },
+            url: "/absenIzin",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                table.ajax.reload();
+            },
+        });
+    });
+    //JIKA ALFA
+    $("#table-absen").on("click", ".alfa-siswa-button", function () {
+        let unique = $(this).attr("data-unique");
+        $.ajax({
+            data: { unique: unique },
+            url: "/absenAlfa",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
                 table.ajax.reload();
             },
         });

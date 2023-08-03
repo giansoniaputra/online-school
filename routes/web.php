@@ -57,6 +57,10 @@ Route::resource('/matpel', MatpelController::class)->middleware('auth');
 //ABSEN
 Route::resource('/absen', AbsenController::class)->middleware('auth');
 Route::get('/inputAbsen', [AbsenController::class, 'input_absen'])->middleware('auth');
+Route::get('/absenHadir', [AbsenController::class, 'absen_hadir'])->middleware('auth');
+Route::get('/absenSakit', [AbsenController::class, 'absen_sakit'])->middleware('auth');
+Route::get('/absenIzin', [AbsenController::class, 'absen_izin'])->middleware('auth');
+Route::get('/absenAlfa', [AbsenController::class, 'absen_alfa'])->middleware('auth');
 //ambil data BAP
 Route::get('/getCurrentBAP', [AbsenController::class, 'get_current_BAP'])->middleware('auth');
 Route::get('/deletBAP', [AbsenController::class, 'deleteBAP'])->middleware('auth');
