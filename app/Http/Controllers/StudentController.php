@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Absen;
 use App\Models\Kelas;
 use App\Models\Student;
 use Illuminate\Support\Str;
@@ -173,18 +174,31 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        Student::where('unique', $student->unique)->delete();
-        User::where('username', $student->nis)->delete();
-        return response()->json(['success' => 'Data Berhasi Dihapus']);
+        $cek = Absen::where('student_unique', $student->unique)->first();
+        if ($cek) {
+            return response()->json(['errors' => 'Data Siswa Tidak Bisa Dihapus']);
+        } else {
+            Student::where('unique', $student->unique)->delete();
+            User::where('username', $student->nis)->delete();
+            return response()->json(['success' => 'Data Berhasi Dihapus']);
+        }
     }
 
     public function dataTables(Request $request)
     {
         if ($request->ajax()) {
-            $query = DB::table('students as a')
-                ->join('kelas as b', 'a.kelas', '=', 'b.unique')
-                ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
-                ->get();
+            if ($request->matpel == "ALL") {
+                $query = DB::table('students as a')
+                    ->join('kelas as b', 'a.kelas', '=', 'b.unique')
+                    ->select('a.*', 'b.unique as kelas_unique', 'b.kelas as kelas2', 'b.huruf')
+                    ->get();
+            } else {
+                $query = DB::table('students as a')
+                    ->join('kelas as b', 'a.kelas', '=', 'b.unique')
+                    ->select('a.*', 'b.unique as kelas_unique', 'b.kelas as kelas2', 'b.huruf')
+                    ->where('b.unique', $request->matpel)
+                    ->get();
+            }
             foreach ($query as $row) {
                 $row->kelas2 = $row->kelas2 . $row->huruf;
             }

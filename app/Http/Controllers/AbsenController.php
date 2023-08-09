@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\BAP;
 use App\Models\Absen;
+use App\Models\Kelas;
+use App\Models\Matpel;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\TahunAjaran;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -29,7 +32,9 @@ class AbsenController extends Controller
                     ->join('matpels as b', 'a.matpel_unique', '=', 'b.unique')
                     ->select('a.*', 'b.nama_matpel', 'b.kelas')
                     ->where('a.teacher_unique', $unique->unique)
-                    ->get()
+                    ->get(),
+                'tahun_ajaran' => TahunAjaran::all(),
+                'tahun_aktif' => TahunAjaran::where('status', '1')->first(),
             ];
             return view('absen.index', $data);
         } else {
@@ -53,10 +58,14 @@ class AbsenController extends Controller
         $rules = [
             'pertemuan' => 'required',
             'matpel_unique' => 'required',
+            'kelas' => 'required',
+            'tahun_ajaran_unique' => 'required',
             'bap' => 'required',
         ];
         $pesan = [
             'pertemuan.required' => 'Pertemuan tidak boleh kosong',
+            'tahun_ajaran_unique.required' => 'Tahun ajaran tidak boleh kosong',
+            'kelas.required' => 'Kelas tidak boleh kosong',
             'matpel_unique.required' => 'Mata pelajaran tidak boleh kosong',
             'bap.required' => 'BAP tidak boleh kosong',
         ];
@@ -68,6 +77,8 @@ class AbsenController extends Controller
                 'unique' => Str::orderedUuid(),
                 'matpel_unique' => $request->matpel_unique,
                 'guru_unique' => auth()->user()->unique,
+                'tahun_ajaran_unique' => $request->tahun_ajaran_unique,
+                'kelas' => $request->kelas,
                 'pertemuan' => $request->pertemuan,
                 'tanggal_bap' => Carbon::now(),
                 'bap' => $request->bap,
@@ -157,19 +168,34 @@ class AbsenController extends Controller
     public function dataTablesBAP(Request $request)
     {
         if ($request->ajax()) {
-            $query = DB::table('b_a_p_s as a')
-                ->join('matpels as b', 'a.matpel_unique', "=", "b.unique")
-                ->select("a.*", "b.nama_matpel", "b.kelas")
-                ->where('a.guru_unique', auth()->user()->unique)
-                ->get();
+            if ($request->f_matpel == 'ALL') {
+                $query = DB::table('b_a_p_s as a')
+                    ->join('matpels as b', 'a.matpel_unique', "=", "b.unique")
+                    ->join('tahun_ajarans as c', 'a.tahun_ajaran_unique', "=", "c.unique")
+                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir")
+                    ->where('a.guru_unique', auth()->user()->unique)
+                    ->where('a.tahun_ajaran_unique', $request->tahun_ajaran)
+                    ->get();
+            } else {
+                $query = DB::table('b_a_p_s as a')
+                    ->join('matpels as b', 'a.matpel_unique', "=", "b.unique")
+                    ->join('tahun_ajarans as c', 'a.tahun_ajaran_unique', "=", "c.unique")
+                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir")
+                    ->where('a.guru_unique', auth()->user()->unique)
+                    ->where('a.matpel_unique', $request->f_matpel)
+                    ->where('a.tahun_ajaran_unique', $request->tahun_ajaran)
+                    ->get();
+            }
+
             foreach ($query as $row) {
-                $row->pengampu = $row->nama_matpel . ' - ' . $row->kelas;
+                $row->pengampu = $row->nama_matpel . ' - ' . $row->kelas2;
                 $row->tanggal_bap = tanggal_hari($row->tanggal_bap, true);
+                $row->tahun_aktif = $row->tahun_awal . '/' . $row->tahun_akhir;
             }
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
-                    <button class="btn btn-rounded btn-sm btn-primary text-white absen-button" title="Absen Siswa" data-unique="' . $row->unique . '">Absen</button>';
+                    <button class="btn btn-rounded btn-sm btn-primary text-white absen-button" title="Absen Siswa" data-unique="' . $row->unique . '" data-matpel="' . $row->nama_matpel . '" data-tahun-ajaran="' . $row->tahun_awal . '/' . $row->tahun_akhir . '" data-tanggal-bap="' . $row->tanggal_bap . '" data-kelas="' . $row->kelas . '">Absen</button>';
                 return $actionBtn;
             })->make(true);
         }
@@ -179,8 +205,11 @@ class AbsenController extends Controller
     {
         $query = BAP::where('matpel_unique', $request->matpel)
             ->where('pertemuan', $request->pertemuan)
+            ->where('tahun_ajaran_unique', $request->tahun_ajaran)
+            ->where('kelas', $request->kelas)
             ->where('guru_unique', auth()->user()->unique)
             ->first();
+
         if ($query) {
             return response()->json(['success' => $query]);
         } else {
@@ -188,11 +217,32 @@ class AbsenController extends Controller
         }
     }
 
+    //Ambil Kelas
+    public function get_kelas(Request $request)
+    {
+        $matpel = Matpel::where('unique', $request->matpel)->first();
+        $kelas = Kelas::where('kelas', $matpel->kelas)->get();
+        echo '<div class="row pl-3 pr-3" id="kelas_echo">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="kelas">Kelas</label>
+                <select class="form-control" name="kelas" id="kelas">
+                    <option selected disabled value="">Pilih Kelas...</option>';
+        foreach ($kelas as $row) {
+            echo '<option value="' . $row->kelas . $row->huruf . '">' . $row->kelas . $row->huruf . '</option>';
+        }
+        echo '</select>
+            </div>
+        </div>
+    </div>';
+    }
+
     public function input_absen(Request $request)
     {
         $siswa = DB::table('students as a')
             ->join('kelas as b', 'a.kelas', '=', 'b.unique')
             ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
+            ->where(DB::raw('CONCAT(b.kelas, b.huruf)'), $request->kelas)
             ->get();
         $cek = Absen::where('bap_unique', $request->unique_bap)->first();
         $bap = BAP::where('unique', $request->unique_bap)->first();
@@ -214,6 +264,7 @@ class AbsenController extends Controller
             return response()->json(['data' => Absen::latest()->first()]);
         }
     }
+
 
     //Absen Hadir
     public function absen_hadir(Request $request)

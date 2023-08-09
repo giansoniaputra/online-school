@@ -4,7 +4,13 @@ $(document).ready(function () {
         lengthChange: false,
         autoWidth: false,
         serverSide: true,
-        ajax: "/datatablesSiswa",
+        ajax: {
+            url: "/datatablesSiswa",
+            type: "GET",
+            data: function (d) {
+                d.matpel = $("#matkul-judul").val();
+            },
+        },
         columns: [
             {
                 data: null,
@@ -44,6 +50,11 @@ $(document).ready(function () {
                 targets: 0, // Kolom nomor, dimulai dari 0
             },
         ],
+    });
+
+    //Ketika Kelas Dipilih
+    $("#matkul-judul").on("change", function () {
+        table.ajax.reload();
     });
 
     //ketika tombol tambah data di klik
@@ -219,8 +230,12 @@ $(document).ready(function () {
                     type: "POST",
                     dataType: "json",
                     success: function (response) {
-                        table.ajax.reload();
-                        Swal.fire("Deleted!", response.success, "success");
+                        if (response.errors) {
+                            Swal.fire("Warning!", response.errors, "warning");
+                        } else {
+                            table.ajax.reload();
+                            Swal.fire("Deleted!", response.success, "success");
+                        }
                     },
                 });
             }

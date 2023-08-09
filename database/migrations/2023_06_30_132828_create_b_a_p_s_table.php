@@ -16,6 +16,8 @@ return new class extends Migration
             $table->uuid('unique')->unique();
             $table->string('matpel_unique')->nullable();
             $table->string('guru_unique')->nullable();
+            $table->string('tahun_ajaran_unique')->nullable();
+            $table->string('kelas')->nullable();
             $table->string('pertemuan');
             $table->date('tanggal_bap');
             $table->string('bap');

@@ -23,6 +23,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" class="form-control" id="tahun_ajaran_unique" name="tahun_ajaran_unique" readonly>
                     <div class="row pl-3 pr-3">
                         <div class="col-sm-12">
                             <div class="form-group">

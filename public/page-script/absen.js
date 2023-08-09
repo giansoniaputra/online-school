@@ -60,7 +60,14 @@ $(document).ready(function () {
         processing: true,
         autoWidth: false,
         serverSide: true,
-        ajax: "/datatablesBAP",
+        ajax: {
+            url: "/datatablesBAP",
+            type: "GET",
+            data: function (d) {
+                d.tahun_ajaran = $("#tahun_ajaran").val();
+                d.f_matpel = $("#filter-matpels").val();
+            },
+        },
         columns: [
             {
                 data: null,
@@ -75,7 +82,13 @@ $(document).ready(function () {
                 data: "nama_matpel",
             },
             {
+                data: "kelas",
+            },
+            {
                 data: "pertemuan",
+            },
+            {
+                data: "tahun_aktif",
             },
             {
                 data: "tanggal_bap",
@@ -101,6 +114,10 @@ $(document).ready(function () {
             },
         ],
     });
+    //FILTER MATA PELAJARAN
+    $("#filter-matpels").on("change", function () {
+        table2.ajax.reload();
+    });
     //RESET FROM
     $(".btn-close").on("click", function () {
         $("#unique").val("");
@@ -108,6 +125,7 @@ $(document).ready(function () {
         $("#pertemuan").val("");
         $("#matpel_unique").val("");
         $("#bap").val("");
+        $("#modal-bap #kelas_echo").remove();
     });
     $("#btn-add-bap").on("click", function () {
         let bap = $("#bap_per").val();
@@ -115,6 +133,7 @@ $(document).ready(function () {
             $("#bap_per").addClass("is-invalid");
         } else {
             $("#pertemuan").val(bap);
+            $("#tahun_ajaran_unique").val($("#tahun_ajaran").val());
             $("#btn-action-bap").html(
                 '<button type="button" class="btn btn-primary" id="btn-save-data">Tambah BAP</button>'
             );
@@ -124,6 +143,10 @@ $(document).ready(function () {
     });
     $("#bap").on("click", function () {
         $(this).removeClass("is-invalid");
+    });
+    //Ketika tahun ajaran di pilih
+    $("#tahun_ajaran").on("change", function () {
+        table2.ajax.reload();
     });
     //ACTION SAVE BAP
     $("#modal-bap").on("click", "#btn-save-data", function () {
@@ -141,6 +164,7 @@ $(document).ready(function () {
                 if (response.errors) {
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-bap #kelas_echo").remove();
                     $("#unique").val("");
                     $("#method").val("");
                     $("#pertemuan").val("");
@@ -154,12 +178,78 @@ $(document).ready(function () {
         });
     });
     $("#matpel_unique").on("change", function () {
+        $("#modal-bap #kelas_echo").remove();
         let matpel = $(this).val();
+        let parent = $(this).parent().parent().parent();
         let pertemuan = $("#pertemuan").val();
+        let kelas = $("#modal-bap #kelas").val();
+        let tahun_ajaran = $("#tahun_ajaran_unique").val();
         $.ajax({
             data: {
                 matpel: matpel,
+                tahun_ajaran: tahun_ajaran,
                 pertemuan: pertemuan,
+                kelas: kelas,
+            },
+            url: "/getCurrentBAP",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    if (matpel == "") {
+                        $("#modal-bap #kelas_echo").remove();
+                    } else {
+                        $.ajax({
+                            data: {
+                                matpel: matpel,
+                            },
+                            url: "/getAllClass",
+                            success: function (response) {
+                                parent.after(response);
+                            },
+                        });
+                    }
+                    $("#unique").val(response.success.unique);
+                    $("#bap").val(response.success.bap);
+                    $("#btn-action-bap").html(
+                        '<button type="button" class="btn btn-warning" id="btn-update-data">Update BAP</button>' +
+                            '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
+                    );
+                } else {
+                    if (matpel == "") {
+                        $("#modal-bap #kelas_echo").remove();
+                    } else {
+                        $.ajax({
+                            data: {
+                                matpel: matpel,
+                            },
+                            url: "/getAllClass",
+                            success: function (response) {
+                                parent.after(response);
+                            },
+                        });
+                    }
+                    $("#unique").val("");
+                    $("#method").val("");
+                    $("#bap").val("");
+                    $("#btn-action-bap").html(
+                        '<button type="button" class="btn btn-primary" id="btn-save-data">Tambah BAP</button>'
+                    );
+                }
+            },
+        });
+    });
+    $("#modal-bap").on("change", "#kelas", function () {
+        let matpel = $("#matpel_unique").val();
+        let pertemuan = $("#pertemuan").val();
+        let kelas = $(this).val();
+        let tahun_ajaran = $("#tahun_ajaran_unique").val();
+        $.ajax({
+            data: {
+                matpel: matpel,
+                tahun_ajaran: tahun_ajaran,
+                pertemuan: pertemuan,
+                kelas: kelas,
             },
             url: "/getCurrentBAP",
             type: "GET",
@@ -183,6 +273,38 @@ $(document).ready(function () {
             },
         });
     });
+    // $("#tahun_ajaran_unique").on("change", function () {
+    //     let matpel = $("#matpel_unique").val();
+    //     let pertemuan = $("#pertemuan").val();
+    //     let tahun_ajaran = $(this).val();
+    //     $.ajax({
+    //         data: {
+    //             matpel: matpel,
+    //             tahun_ajaran: tahun_ajaran,
+    //             pertemuan: pertemuan,
+    //         },
+    //         url: "/getCurrentBAP",
+    //         type: "GET",
+    //         dataType: "json",
+    //         success: function (response) {
+    //             if (response.success) {
+    //                 $("#unique").val(response.success.unique);
+    //                 $("#bap").val(response.success.bap);
+    //                 $("#btn-action-bap").html(
+    //                     '<button type="button" class="btn btn-warning" id="btn-update-data">Update BAP</button>' +
+    //                         '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
+    //                 );
+    //             } else {
+    //                 $("#unique").val("");
+    //                 $("#method").val("");
+    //                 $("#bap").val("");
+    //                 $("#btn-action-bap").html(
+    //                     '<button type="button" class="btn btn-primary" id="btn-save-data">Tambah BAP</button>'
+    //                 );
+    //             }
+    //         },
+    //     });
+    // });
     //EDIT BAP
     $("#modal-bap").on("click", "#btn-update-data", function () {
         $("#method").val("PUT");
@@ -200,6 +322,7 @@ $(document).ready(function () {
                 if (response.errors) {
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-bap #kelas_echo").remove();
                     $("#unique").val("");
                     $("#method").val("");
                     $("#pertemuan").val("");
@@ -254,11 +377,15 @@ $(document).ready(function () {
         $("#tab2").addClass("show active");
         let unique_bap = $(this).attr("data-unique");
         let tahun_ajaran = $("#input-tahun-ajaran-aktif").val();
-
+        let kelas = $(this).attr("data-kelas");
+        $("#matpel-judul").html($(this).attr("data-matpel"));
+        $("#tahun-ajaran-judul").html($(this).attr("data-tahun-ajaran"));
+        $("#tanggal-absen-judul").html($(this).attr("data-tanggal-bap"));
         $.ajax({
             data: {
                 unique_bap: unique_bap,
                 tahun_ajaran: tahun_ajaran,
+                kelas: kelas,
             },
             url: "/inputAbsen",
             type: "GET",
@@ -273,6 +400,8 @@ $(document).ready(function () {
     //JIKA HADIR
     $("#table-absen").on("click", ".hadir-siswa-button", function () {
         let unique = $(this).attr("data-unique");
+        let parent = $(this).parent().parent();
+        parent.children().eq(3).html("Loading...");
         $.ajax({
             data: { unique: unique },
             url: "/absenHadir",
@@ -286,6 +415,8 @@ $(document).ready(function () {
     //JIKA SAKIT
     $("#table-absen").on("click", ".sakit-siswa-button", function () {
         let unique = $(this).attr("data-unique");
+        let parent = $(this).parent().parent();
+        parent.children().eq(3).html("Loading...");
         $.ajax({
             data: { unique: unique },
             url: "/absenSakit",
@@ -299,6 +430,8 @@ $(document).ready(function () {
     //JIKA IZIN
     $("#table-absen").on("click", ".izin-siswa-button", function () {
         let unique = $(this).attr("data-unique");
+        let parent = $(this).parent().parent();
+        parent.children().eq(3).html("Loading...");
         $.ajax({
             data: { unique: unique },
             url: "/absenIzin",
@@ -312,6 +445,8 @@ $(document).ready(function () {
     //JIKA ALFA
     $("#table-absen").on("click", ".alfa-siswa-button", function () {
         let unique = $(this).attr("data-unique");
+        let parent = $(this).parent().parent();
+        parent.children().eq(3).html("Loading...");
         $.ajax({
             data: { unique: unique },
             url: "/absenAlfa",

@@ -63,6 +63,7 @@ Route::get('/absenIzin', [AbsenController::class, 'absen_izin'])->middleware('au
 Route::get('/absenAlfa', [AbsenController::class, 'absen_alfa'])->middleware('auth');
 //ambil data BAP
 Route::get('/getCurrentBAP', [AbsenController::class, 'get_current_BAP'])->middleware('auth');
+Route::get('/getAllClass', [AbsenController::class, 'get_kelas'])->middleware('auth');
 Route::get('/deletBAP', [AbsenController::class, 'deleteBAP'])->middleware('auth');
 
 //TAHUN AJARAN
