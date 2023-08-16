@@ -5,6 +5,7 @@ use App\Models\TahunAjaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MatpelController;
 use App\Http\Controllers\StudentController;
@@ -22,13 +23,7 @@ use App\Http\Controllers\TahunAjaranController;
 |
 */
 
-Route::get('/', function () {
-    $data = [
-        'title_page' => 'Dashborad',
-        'title' => 'Dashborad',
-    ];
-    return view('dashboard.index', $data);
-})->middleware('auth');
+Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/home', function () {
     $data = [
         'title_page' => 'Dashborad',
@@ -36,9 +31,11 @@ Route::get('/home', function () {
     ];
     return view('dashboard.index', $data);
 })->middleware('auth');
-
+Route::resource("/user", AuthController::class)->middleware('auth');
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
 Route::get('/auth', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::get('/register', [AuthController::class, 'register'])->middleware('auth');
+Route::post('/registerUser', [AuthController::class, 'register_user'])->middleware('auth');
 Route::get('/logout', [AuthController::class, 'logout']);
 
 //SISWA
@@ -83,3 +80,4 @@ Route::get('/datatablesMatpel', [MatpelController::class, 'dataTables'])->middle
 Route::get('/datatablesBAP', [AbsenController::class, 'dataTablesBAP'])->middleware('auth');
 Route::get('/datatablesTahunAjaran', [TahunAjaranController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesKelas', [KelasController::class, 'dataTables'])->middleware('auth');
+Route::get('/dataTablesUser', [AuthController::class, 'dataTables'])->middleware('auth');

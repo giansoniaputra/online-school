@@ -30,6 +30,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'unique';
+    }
+
     /**
      * The attributes that should be cast.
      *

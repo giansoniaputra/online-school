@@ -42,6 +42,81 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Master
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/student" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Data Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/teacher" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Data Guru</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/matpel" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Mata Pelajaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tahun_ajaran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tahun Ajaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/kelas" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Data Kelas</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-school"></i>
+                        <p>
+                            &nbsp;&nbsp;Akademik
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/absen" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>BAP</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <p>
+                            &nbsp;&nbsp;User
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/register" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>New User</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- <li class="nav-item">
                     <a href="/student" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
@@ -87,7 +162,7 @@
                         <p>
                             Kelas
                         </p>
-                    </a>
+                    </a> --}}
                 </li>
             </ul>
         </nav>
