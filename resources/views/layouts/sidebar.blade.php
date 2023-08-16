@@ -41,6 +41,7 @@
                         </p>
                     </a>
                 </li>
+                @if(auth()->user()->role == 'ADMIN')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -82,6 +83,8 @@
                         </li>
                     </ul>
                 </li>
+                @endif
+                @if(auth()->user()->role == 'GURU')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-school"></i>
@@ -99,6 +102,8 @@
                         </li>
                     </ul>
                 </li>
+                @endif
+                @if(auth()->user()->role == 'ADMIN')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-user"></i>
@@ -116,6 +121,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
                 {{-- <li class="nav-item">
                     <a href="/student" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
