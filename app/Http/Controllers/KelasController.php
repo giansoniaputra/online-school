@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -110,8 +111,13 @@ class KelasController extends Controller
      */
     public function destroy(Kelas $kelas, Request $request)
     {
-        $cek = Kelas::where('unique', $request->unique)->delete();
-        return response()->json(['success' => 'Data Kelas Berhasil Dihpus']);
+        $cek = Student::where('kelas', $request->unique)->first();
+        if ($cek) {
+            return response()->json(['errors' => 'Data Kelas Tidak Bisa Di Hapus']);
+        } else {
+            Kelas::where('unique', $request->unique)->delete();
+            return response()->json(['success' => 'Data Kelas Berhasil Dihpus']);
+        }
     }
 
     public function dataTables(Request $request)

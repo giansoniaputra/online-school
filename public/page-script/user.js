@@ -4,7 +4,14 @@ $(document).ready(function () {
         lengthChange: false,
         autoWidth: false,
         serverSide: true,
-        ajax: "/dataTablesUser",
+        ajax: {
+            url: "/dataTablesUser",
+            type: "GET",
+            data: function (d) {
+                d.role = $("#role-user").val();
+            },
+        },
+
         columns: [
             {
                 data: null,
@@ -41,6 +48,9 @@ $(document).ready(function () {
                 targets: 0, // Kolom nomor, dimulai dari 0
             },
         ],
+    });
+    $("#role-user").on("click", function () {
+        table.ajax.reload();
     });
     //ketika tambah data diklik
     $("#btn-add-data").on("click", function () {

@@ -172,8 +172,12 @@ $(document).ready(function () {
                     type: "POST",
                     dataType: "json",
                     success: function (response) {
-                        table.ajax.reload();
-                        Swal.fire("Deleted!", response.success, "success");
+                        if (response.errors) {
+                            Swal.fire("Warning!", response.errors, "warning");
+                        } else {
+                            table.ajax.reload();
+                            Swal.fire("Deleted!", response.success, "success");
+                        }
                     },
                 });
             }

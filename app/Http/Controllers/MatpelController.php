@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BAP;
 use App\Models\Matpel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -104,8 +105,13 @@ class MatpelController extends Controller
      */
     public function destroy(Matpel $matpel)
     {
-        Matpel::where('unique', $matpel->unique)->delete();
-        return response()->json(['success' => 'Data Berhasil Dihaspus']);
+        $cek = BAP::where('matpel_unique', $matpel->unique)->first();
+        if ($cek) {
+            return response()->json(['errors' => 'Data Mata Pelajaran Tidak Bisa Di Hapus']);
+        } else {
+            Matpel::where('unique', $matpel->unique)->delete();
+            return response()->json(['success' => 'Data Berhasil Dihaspus']);
+        }
     }
     public function dataTables(Request $request)
     {

@@ -105,6 +105,12 @@ class AuthController extends Controller
         $data = [
             'title_page' => 'User',
             'title' => 'Data User',
+            'roles' => DB::table('users')
+                ->distinct()
+                ->select('role')
+                ->where('role', '!=', 'ADMIN')
+                ->get(),
+
         ];
         return view('auth.register', $data);
     }
@@ -151,15 +157,21 @@ class AuthController extends Controller
     public function dataTables(Request $request)
     {
         $query = DB::table("users")
-            ->where("role", "!=", "GURU")
-            ->where("role", "!=", "SISWA")
+            ->where("role", $request->role)
             ->get();
         return DataTables::of($query)->addColumn('action', function ($row) {
-            $actionBtn =
-                '
-                <button class="btn btn-rounded btn-sm btn-warning text-dark edit-button" title="Edit Data" data-unique="' . $row->unique . '"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-rounded btn-sm btn-danger text-white delete-button" title="Hapus Data" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="fas fa-trash-alt"></i></button>';
-            return $actionBtn;
+            if ($row->role == 'ADMIN') {
+                $actionBtn =
+                    '
+                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-button" title="Edit Data" data-unique="' . $row->unique . '"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-danger text-white delete-button" title="Hapus Data" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="fas fa-trash-alt"></i></button>';
+                return $actionBtn;
+            } else {
+                $actionBtn =
+                    '
+                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-button" title="Edit Data" data-unique="' . $row->unique . '"><i class="fas fa-edit"></i></button>';
+                return $actionBtn;
+            }
         })->make(true);
     }
 }

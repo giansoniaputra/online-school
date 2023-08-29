@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BAP;
 use App\Models\User;
 use App\Models\Ampuan;
 use App\Models\Matpel;
@@ -143,8 +144,13 @@ class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher)
     {
-        Teacher::where('unique', $teacher->unique)->delete();
-        return response()->json(['success' => "Data Berhasil Dihapus"]);
+        $cek = BAP::where('guru_unique', $teacher->unique)->first();
+        if ($cek) {
+            return response()->json(['errors' => "Data Tidak Bisa Dihapus"]);
+        } else {
+            Teacher::where('unique', $teacher->unique)->delete();
+            return response()->json(['success' => "Data Berhasil Dihapus"]);
+        }
     }
 
     public function dataTables(Request $request)
