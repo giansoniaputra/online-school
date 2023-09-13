@@ -80,6 +80,7 @@ $(document).ready(function () {
         $("#tanggal_lahir").val("");
         $("#alamat").val("");
         $("#asal_sekolah").val("");
+        $("#telepon_ortu").val("");
         $("#agama").val("");
         $("#kelas").val("");
         $("#ayah").val("");
@@ -91,6 +92,8 @@ $(document).ready(function () {
     });
 
     $("#modal-siswa").on("click", "#btn-save-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-siswa form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -103,8 +106,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-siswa #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-siswa #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-siswa").modal("hide");
                     //reset form
                     $("#nisn").val("");
@@ -114,6 +121,7 @@ $(document).ready(function () {
                     $("#tanggal_lahir").val("");
                     $("#alamat").val("");
                     $("#asal_sekolah").val("");
+                    $("#telepon_ortu").val("");
                     $("#agama").val("");
                     $("#kelas").val("");
                     $("#ayah").val("");
@@ -131,6 +139,7 @@ $(document).ready(function () {
 
     //AMBIL DATA SISWA YANG  AKAN DIEDIT
     $("#table-siswa").on("click", ".edit-siswa-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         $.ajax({
             data: { unique: unique },
@@ -138,6 +147,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 $("#nisn").val(response.data.nisn);
                 $("#nis").val(response.data.nis);
                 $("#nama").val(response.data.nama);
@@ -146,6 +156,7 @@ $(document).ready(function () {
                 $("#jenis_kelamin").val(response.data.jenis_kelamin);
                 $("#alamat").val(response.data.alamat);
                 $("#asal_sekolah").val(response.data.asal_sekolah);
+                $("#telepon_ortu").val(response.data.telepon_ortu);
                 $("#agama").val(response.data.agama);
                 $("#kelas").val(response.data.kelas);
                 $("#ayah").val(response.data.ayah);
@@ -169,6 +180,8 @@ $(document).ready(function () {
 
     //UPDATE DATA SISWA
     $("#modal-siswa").on("click", "#btn-update-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-siswa form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -181,8 +194,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-siswa #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-siswa #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-siswa").modal("hide");
                     //reset form
                     $("#nisn").val("");
@@ -192,6 +209,7 @@ $(document).ready(function () {
                     $("#tanggal_lahir").val("");
                     $("#alamat").val("");
                     $("#asal_sekolah").val("");
+                    $("#telepon_ortu").val("");
                     $("#agama").val("");
                     $("#kelas").val("");
                     $("#ayah").val("");
@@ -221,6 +239,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         _method: "DELETE",
@@ -231,8 +250,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.errors) {
+                            $("#spinner").html("")
                             Swal.fire("Warning!", response.errors, "warning");
                         } else {
+                            $("#spinner").html("")
                             table.ajax.reload();
                             Swal.fire("Deleted!", response.success, "success");
                         }

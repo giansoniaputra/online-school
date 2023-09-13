@@ -82,6 +82,8 @@ $(document).ready(function () {
     });
     //Action Simpan
     $("#modal-tahun-ajaran").on("click", "#btn-save", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-tahun-ajaran form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -94,8 +96,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-tahun-ajaran #btn-save").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-tahun-ajaran #btn-save").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#unique").val("");
                     $("#method").val("");
                     $("#title-modal").html("");
@@ -188,6 +194,7 @@ $(document).ready(function () {
     }
     //Ambil Data yang akan di edit
     $("#table-tahun-ajaran").on("click", ".button-edit", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         $("#unique").val(unique);
         $("#method").val("PUT");
@@ -203,6 +210,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 $("#tahun_awal").val(response.data.tahun_awal);
                 $("#tahun_akhir").val(response.data.tahun_akhir);
                 $("#periode").val(response.data.periode);
@@ -212,6 +220,8 @@ $(document).ready(function () {
     });
     //Action Update
     $("#modal-tahun-ajaran").on("click", "#btn-update", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-tahun-ajaran form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -224,8 +234,11 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-tahun-ajaran #btn-update").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#spinner").html("")
                     $("#title-modal").html("");
                     $("#modal-tahun-ajaran #btn-action").html("");
                     $("#tahun_awal").val("");
@@ -254,6 +267,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         _token: token,
@@ -264,8 +278,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.errors) {
+                            $("#spinner").html("")
                             Swal.fire("Warning!", response.errors, "warning");
                         } else {
+                            $("#spinner").html("")
                             table.ajax.reload();
                             Swal.fire("Good job!", response.success, "success");
                         }
@@ -287,6 +303,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Ubah!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         unique: unique,
@@ -302,6 +319,7 @@ $(document).ready(function () {
                                 $("#tahun-aktif").html(response);
                             },
                         });
+                        $("#spinner").html("")
                         table.ajax.reload();
                         Swal.fire("Good Jobs!", response.success, "success");
                     },

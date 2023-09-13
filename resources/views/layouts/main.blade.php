@@ -23,6 +23,61 @@ $tahun = TahunAjaran::where('status', '1')->first();
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .spinner {
+            width: 56px;
+            height: 56px;
+            display: grid;
+            border: 4.5px solid #0000;
+            border-radius: 50%;
+            border-color: #ffff #0000;
+            animation: spinner-e04l1k 1s infinite linear;
+        }
+
+        .spinner::before,
+        .spinner::after {
+            content: "";
+            grid-area: 1/1;
+            margin: 2.2px;
+            border: inherit;
+            border-radius: 50%;
+        }
+
+        .spinner::before {
+            border-color: #474bff #0000;
+            animation: inherit;
+            animation-duration: 0.5s;
+            animation-direction: reverse;
+        }
+
+        .spinner::after {
+            margin: 8.9px;
+        }
+
+        @keyframes spinner-e04l1k {
+            100% {
+                transform: rotate(1turn);
+            }
+        }
+
+        .card-spinner {
+            position: fixed;
+            top: 50vh;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100000;
+            padding: 75px 150px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+    <script>
+        const loader = `
+            <div class="card d-flex justify-conten-center align-items-center card-spinner d-none">
+                <div class="spinner" style="position:relative;z-index: 101;"></div>
+            </div>`
+
+    </script>
 </head>
 
 
@@ -101,6 +156,7 @@ $tahun = TahunAjaran::where('status', '1')->first();
             <section class="content">
                 <div class="container-fluid">
                     <!-- Small boxes (Stat box) -->
+                    <div id="spinner"></div>
                     @yield('container')
 
                 </div>

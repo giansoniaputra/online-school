@@ -63,6 +63,8 @@ $(document).ready(function () {
     });
     //ACTION SIMPAN
     $("#modal-guru").on("click", "#btn-save-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-guru form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -75,8 +77,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-guru #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-guru #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#unique").val("");
                     $("#method").val("");
                     $("#title-modal").html("<p>Data Guru</p>");
@@ -95,6 +101,7 @@ $(document).ready(function () {
     });
     //AMBIL DATA GURU YANG AKAN DIEDIT
     $("#table-guru").on("click", ".edit-guru-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         $.ajax({
             data: { unique: unique },
@@ -102,6 +109,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 $("#unique").val(unique);
                 $("#method").val("PUT");
                 $("#title-modal").html("<p>Edit Data Guru</p>");
@@ -119,6 +127,8 @@ $(document).ready(function () {
     });
     //ACTION UPDATE
     $("#modal-guru").on("click", "#btn-update-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-guru form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -131,8 +141,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-guru #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-guru #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#unique").val("");
                     $("#method").val("");
                     $("#title-modal").html("<p>Data Guru</p>");
@@ -163,6 +177,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         _method: "DELETE",
@@ -173,8 +188,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.errors) {
+                            $("#spinner").html("")
                             Swal.fire("Warning!", response.errors, "warning");
                         } else {
+                            $("#spinner").html("")
                             table.ajax.reload();
                             Swal.fire("Deleted!", response.success, "success");
                         }
@@ -202,6 +219,7 @@ $(document).ready(function () {
     });
 
     $("#modal-ampu").on("click", ".ampu-button", function () {
+        $("#spinner").html(loader)
         let unique_matpel = $(this).attr("unique-matpel");
         let unique_guru = $("#unique-guru").val();
         $.ajax({
@@ -217,6 +235,7 @@ $(document).ready(function () {
                     data: { unique: unique_guru },
                     url: "/refresh_ampuan",
                     success: function (response2) {
+                        $("#spinner").html("")
                         $("#daftar-ampuan").html(response2);
                     },
                 });
@@ -226,6 +245,7 @@ $(document).ready(function () {
 
     //HAPUS AMPUAN
     $("#modal-ampu").on("click", ".lepas-button", function () {
+        $("#spinner").html(loader)
         let unique_matpel = $(this).attr("unique-matpel");
         let unique_guru = $("#unique-guru").val();
         $.ajax({
@@ -241,6 +261,7 @@ $(document).ready(function () {
                     data: { unique: unique_guru },
                     url: "/refresh_ampuan",
                     success: function (response2) {
+                        $("#spinner").html("")
                         $("#daftar-ampuan").html(response2);
                     },
                 });

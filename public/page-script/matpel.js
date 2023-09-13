@@ -60,6 +60,8 @@ $(document).ready(function () {
     });
 
     $("#modal-matpel").on("click", "#btn-save-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-matpel form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -72,8 +74,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-matpel #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-matpel #btn-save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-matpel").modal("hide");
                     //reset form
                     $("#nama_matpel").val("");
@@ -88,6 +94,7 @@ $(document).ready(function () {
     });
     //AMBIL DATA MATA PELJARAN YANG AKAN DI EDIT
     $("#table-matpel").on("click", ".edit-matpel-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         $("#modal-matpel").modal("show");
         $.ajax({
@@ -96,6 +103,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 $("#nama_matpel").val(response.data.nama_matpel);
                 $("#kelas").val(response.data.kelas);
                 $("#unique").val(unique);
@@ -110,6 +118,8 @@ $(document).ready(function () {
 
     // ACTION UPDATE DAATA MATA PELAJARAN
     $("#modal-matpel").on("click", "#btn-update-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-matpel form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -122,8 +132,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-matpel #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-matpel #btn-update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-matpel").modal("hide");
                     //reset form
                     $("#nama_matpel").val("");
@@ -136,7 +150,7 @@ $(document).ready(function () {
             },
         });
     });
-    //HAPUS DATA SISWA
+    //HAPUS DATA MAPEL
     $("#table-matpel").on("click", ".hapus-matpel-button", function () {
         let unique = $(this).attr("data-unique");
         let token = $(this).attr("data-token");
@@ -150,6 +164,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         _method: "DELETE",
@@ -160,8 +175,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.errors) {
+                            $("#spinner").html("")
                             Swal.fire("Warning!", response.errors, "warning");
                         } else {
+                            $("#spinner").html("")
                             table.ajax.reload();
                             Swal.fire("Deleted!", response.success, "success");
                         }

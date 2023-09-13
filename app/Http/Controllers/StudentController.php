@@ -45,13 +45,15 @@ class StudentController extends Controller
             'nis' => 'required|unique:students',
             'nama' => 'required',
             'kelas' => 'required',
+            'telepon_ortu' => 'required',
         ];
         $pesan = [
             'nisn.unique' => 'Data NISN sudah terdaftar',
             'nis.required' => 'NIS tidak boleh kosong',
             'nis.unique' => 'Data nis sudah terdaftar',
             'nama.required' => 'Nama Siswa tidak boleh kosong',
-            'kelas.required' => 'Kelas tidak boleh kosong'
+            'kelas.required' => 'Kelas tidak boleh kosong',
+            'telepon_ortu.required' => 'Nomor telepon orang tua tidak boleh kosong'
         ];
 
         $validator = Validator::make($request->all(), $rules, $pesan);
@@ -67,6 +69,7 @@ class StudentController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'alamat' => $request->alamat,
                 'asal_sekolah' => $request->asal_sekolah,
+                'telepon_ortu' => $request->telepon_ortu,
                 'agama' => $request->agama,
                 'ayah' => $request->ayah,
                 'ibu' => $request->ibu,
@@ -115,10 +118,12 @@ class StudentController extends Controller
         $rules = [
             'nama' => 'required',
             'kelas' => 'required',
+            'telepon_ortu' => 'required',
         ];
         $pesan = [
             'nama.required' => 'Nama Siswa tidak boleh kosong',
-            'kelas.required' => 'Kelas tidak boleh kosong'
+            'kelas.required' => 'Kelas tidak boleh kosong',
+            'telepon_ortu.required' => 'Kelas tidak boleh kosong'
         ];
 
         if ($student->nis == $request->nis) {
@@ -146,6 +151,7 @@ class StudentController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'alamat' => $request->alamat,
                 'asal_sekolah' => $request->asal_sekolah,
+                'telepon_ortu' => $request->telepon_ortu,
                 'agama' => $request->agama,
                 'ayah' => $request->ayah,
                 'ibu' => $request->ibu,

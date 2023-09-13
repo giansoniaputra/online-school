@@ -55,6 +55,8 @@ $(document).ready(function () {
     });
     //Action Save
     $("#modal-kelas").on("click", "#save-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-kelas form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -67,8 +69,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-kelas #save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-kelas #save-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#unique").val("");
                     $("#method").val("");
                     $("#kelas").val("");
@@ -83,6 +89,7 @@ $(document).ready(function () {
 
     //Ambil Data yang ingin di edit
     $("#table-kelas").on("click", ".edit-kelas-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         $.ajax({
             data: { unique: unique },
@@ -90,6 +97,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 $("#title-modal").html("Edit Data Kelas");
                 $("#modal-kelas #btn-action").html(
                     '<button class="btn btn-primary" id="update-data">Update Data</button>'
@@ -104,6 +112,8 @@ $(document).ready(function () {
     });
     //Action Update
     $("#modal-kelas").on("click", "#update-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-kelas form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -116,8 +126,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $("#modal-kelas #update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $("#modal-kelas #update-data").removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#unique").val("");
                     $("#method").val("");
                     $("#kelas").val("");
@@ -145,6 +159,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         _method: "DELETE",
@@ -156,8 +171,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.errors) {
+                            $("#spinner").html("")
                             Swal.fire("Warning!", response.errors, "warning");
                         } else {
+                            $("#spinner").html("")
                             table.ajax.reload();
                             Swal.fire("Deleted!", response.success, "success");
                         }

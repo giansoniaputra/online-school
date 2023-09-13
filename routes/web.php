@@ -1,15 +1,17 @@
 <?php
 
 use App\Models\Kelas;
+use App\Models\AbsenAll;
 use App\Models\TahunAjaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsenController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MatpelController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AbsenAllController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TahunAjaranController;
 
 /*
@@ -71,10 +73,17 @@ Route::get('/refreshTahunAjaran', [TahunAjaranController::class, 'refresh_tahun_
 //MATA PELAJARAN
 Route::resource('/kelas', KelasController::class)->middleware('auth');
 
+//ABSEN ALL
+Route::resource('/absen_all', AbsenAllController::class)->middleware('auth');
+Route::get('/inputAbsenAll', [AbsenAllController::class, 'input_absen'])->middleware('auth');
+Route::get('/hadirAll', [AbsenAllController::class, 'absen_hadir'])->middleware('auth');
+
+
 
 //DATATABLES
 Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesAbsen', [AbsenController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesAbsenAll', [AbsenAllController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesGuru', [TeacherController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesMatpel', [MatpelController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesBAP', [AbsenController::class, 'dataTablesBAP'])->middleware('auth');

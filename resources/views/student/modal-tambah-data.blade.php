@@ -70,10 +70,16 @@
                         </div>
                     </div>
                     <div class="row pl-3 pr-3">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="asal_sekolah">Asal Sekolah</label>
                                 <input type="text" class="form-control" name="asal_sekolah" id="asal_sekolah">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="telepon_ortu">Nomor Telepon Orang Tua</label>
+                                <input type="number" class="form-control" name="telepon_ortu" id="telepon_ortu">
                             </div>
                         </div>
                     </div>

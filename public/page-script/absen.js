@@ -13,6 +13,9 @@ $(document).ready(function () {
                 d.unique = $("#bap_unique_now").val();
             },
         },
+        order: [
+            [1, "asc"]
+        ],
         columns: [
             {
                 data: null,
@@ -150,6 +153,8 @@ $(document).ready(function () {
     });
     //ACTION SAVE BAP
     $("#modal-bap").on("click", "#btn-save-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         let formdata = $("#modal-bap form").serializeArray();
         let data = {};
         $(formdata).each(function (index, obj) {
@@ -162,8 +167,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $(this).removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $(this).removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-bap #kelas_echo").remove();
                     $("#unique").val("");
                     $("#method").val("");
@@ -178,6 +187,7 @@ $(document).ready(function () {
         });
     });
     $("#matpel_unique").on("change", function () {
+        $("#spinner").html(loader)
         $("#modal-bap #kelas_echo").remove();
         let matpel = $(this).val();
         let parent = $(this).parent().parent().parent();
@@ -197,6 +207,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     if (matpel == "") {
+                        $("#spinner").html("")
                         $("#modal-bap #kelas_echo").remove();
                     } else {
                         $.ajax({
@@ -205,6 +216,7 @@ $(document).ready(function () {
                             },
                             url: "/getAllClass",
                             success: function (response) {
+                                $("#spinner").html("")
                                 parent.after(response);
                             },
                         });
@@ -213,10 +225,11 @@ $(document).ready(function () {
                     $("#bap").val(response.success.bap);
                     $("#btn-action-bap").html(
                         '<button type="button" class="btn btn-warning" id="btn-update-data">Update BAP</button>' +
-                            '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
+                        '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
                     );
                 } else {
                     if (matpel == "") {
+                        $("#spinner").html("")
                         $("#modal-bap #kelas_echo").remove();
                     } else {
                         $.ajax({
@@ -225,6 +238,7 @@ $(document).ready(function () {
                             },
                             url: "/getAllClass",
                             success: function (response) {
+                                $("#spinner").html("")
                                 parent.after(response);
                             },
                         });
@@ -260,7 +274,7 @@ $(document).ready(function () {
                     $("#bap").val(response.success.bap);
                     $("#btn-action-bap").html(
                         '<button type="button" class="btn btn-warning" id="btn-update-data">Update BAP</button>' +
-                            '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
+                        '<button type="button" class="btn btn-danger" id="btn-delete-data">Hapus BAP</button>'
                     );
                 } else {
                     $("#unique").val("");
@@ -307,6 +321,8 @@ $(document).ready(function () {
     // });
     //EDIT BAP
     $("#modal-bap").on("click", "#btn-update-data", function () {
+        $(this).attr("disabled", "true");
+        $("#spinner").html(loader)
         $("#method").val("PUT");
         let formdata = $("#modal-bap form").serializeArray();
         let data = {};
@@ -320,8 +336,12 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.errors) {
+                    $(this).removeAttr("disabled");
+                    $("#spinner").html("")
                     displayErrors(response.errors);
                 } else {
+                    $(this).removeAttr("disabled");
+                    $("#spinner").html("")
                     $("#modal-bap #kelas_echo").remove();
                     $("#unique").val("");
                     $("#method").val("");
@@ -348,6 +368,7 @@ $(document).ready(function () {
             confirmButtonText: "Yes, Hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").html(loader)
                 $.ajax({
                     data: {
                         unique: $("#unique").val(),
@@ -356,6 +377,7 @@ $(document).ready(function () {
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
+                        $("#spinner").html("")
                         $("#unique").val("");
                         $("#method").val("");
                         $("#pertemuan").val("");
@@ -399,6 +421,7 @@ $(document).ready(function () {
 
     //JIKA HADIR
     $("#table-absen").on("click", ".hadir-siswa-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         let parent = $(this).parent().parent();
         parent.children().eq(3).html("Loading...");
@@ -408,12 +431,14 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 table.ajax.reload();
             },
         });
     });
     //JIKA SAKIT
     $("#table-absen").on("click", ".sakit-siswa-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         let parent = $(this).parent().parent();
         parent.children().eq(3).html("Loading...");
@@ -423,12 +448,14 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 table.ajax.reload();
             },
         });
     });
     //JIKA IZIN
     $("#table-absen").on("click", ".izin-siswa-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         let parent = $(this).parent().parent();
         parent.children().eq(3).html("Loading...");
@@ -438,12 +465,14 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 table.ajax.reload();
             },
         });
     });
     //JIKA ALFA
     $("#table-absen").on("click", ".alfa-siswa-button", function () {
+        $("#spinner").html(loader)
         let unique = $(this).attr("data-unique");
         let parent = $(this).parent().parent();
         parent.children().eq(3).html("Loading...");
@@ -453,6 +482,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: "json",
             success: function (response) {
+                $("#spinner").html("")
                 table.ajax.reload();
             },
         });

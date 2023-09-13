@@ -15,7 +15,7 @@
                             <div class="card-header"></div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <input type="text" id="unique-guru">
+                                <input type="hidden" id="unique-guru">
                                 <table id="table-ampuan" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
