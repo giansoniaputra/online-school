@@ -55,6 +55,10 @@ $(document).ready(function () {
                 className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
             },
             {
+                targets: [5], // index kolom atau sel yang ingin diatur
+                className: "text-center", // kelas CSS untuk memposisikan isi ke tengah
+            },
+            {
                 searchable: false,
                 orderable: false,
                 targets: 0, // Kolom nomor, dimulai dari 0
@@ -67,6 +71,7 @@ $(document).ready(function () {
         if ($("#kelas").val() == "" || $("#tanggal_absen").val() == "") {
             $("#kelas").addClass('is-invalid');
             $("#tanggal_absen").addClass('is-invalid');
+            $("#spinner").html("")
         } else {
             $.ajax({
                 data: {
@@ -79,6 +84,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     $("#spinner").html("")
+                    $("#hadir-semua").html(`<button class="btn btn-primary btn-sm" id="btn-absen-all" data-kelas="${response.data.student_kelas}" data-tanggal="${response.data.tanggal_absen}">Hadir</button>`)
                     // console.log(response);
                     table.ajax.reload()
                 }
@@ -86,15 +92,87 @@ $(document).ready(function () {
         }
     })
 
+    //HADIR SEMUA
+    $("#table-absen-all").on("click", "#btn-absen-all", function () {
+        $("#spinner").html(loader)
+        $.ajax({
+            data: {
+                kelas: $(this).attr("data-kelas"),
+                tanggal: $(this).attr("data-tanggal")
+            },
+            url: "/hadirSemua",
+            type: "GET",
+            dataType: 'json',
+            success: function (response) {
+                $("#spinner").html("")
+                table.ajax.reload();
+            }
+        });
+    })
+    //Jika Siswa Hadir
     $("#table-absen-all").on('click', ".hadir-siswa-button", function () {
         $("#spinner").html(loader)
         $.ajax({
             data: {
                 unique: $(this).attr("data-unique"),
                 tanggal_absen: $("#tanggal_absen").val(),
-                unique_siswa: $(this).attr("data-unique-siswa")
+                student_unique: $(this).attr("data-unique-siswa")
             },
             url: "/hadirAll",
+            type: "GET",
+            dataType: 'json',
+            success: function (response) {
+                $("#spinner").html("")
+                table.ajax.reload();
+            }
+        });
+    })
+    //Jika Siswa Sakit
+    $("#table-absen-all").on('click', ".sakit-siswa-button", function () {
+        $("#spinner").html(loader)
+        $.ajax({
+            data: {
+                unique: $(this).attr("data-unique"),
+                tanggal_absen: $("#tanggal_absen").val(),
+                student_unique: $(this).attr("data-unique-siswa")
+            },
+            url: "/sakitAll",
+            type: "GET",
+            dataType: 'json',
+            success: function (response) {
+                $("#spinner").html("")
+                table.ajax.reload();
+            }
+        });
+    })
+    //Jika Siswa Izin
+    $("#table-absen-all").on('click', ".izin-siswa-button", function () {
+        $("#spinner").html(loader)
+        $.ajax({
+            data: {
+                unique: $(this).attr("data-unique"),
+                tanggal_absen: $("#tanggal_absen").val(),
+                student_unique: $(this).attr("data-unique-siswa")
+            },
+            url: "/izinAll",
+            type: "GET",
+            dataType: 'json',
+            success: function (response) {
+                $("#spinner").html("")
+                table.ajax.reload();
+            }
+        });
+    })
+    //Jika Siswa Alfa
+    $("#table-absen-all").on('click', ".alfa-siswa-button", function () {
+        $("#spinner").html(loader)
+        $.ajax({
+            data: {
+                unique: $(this).attr("data-unique"),
+                tanggal_absen: $("#tanggal_absen").val(),
+                student_unique: $(this).attr("data-unique-siswa")
+            },
+            url: "/alfaAll",
             type: "GET",
             dataType: 'json',
             success: function (response) {

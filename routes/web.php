@@ -77,6 +77,10 @@ Route::resource('/kelas', KelasController::class)->middleware('auth');
 Route::resource('/absen_all', AbsenAllController::class)->middleware('auth');
 Route::get('/inputAbsenAll', [AbsenAllController::class, 'input_absen'])->middleware('auth');
 Route::get('/hadirAll', [AbsenAllController::class, 'absen_hadir'])->middleware('auth');
+Route::get('/sakitAll', [AbsenAllController::class, 'absen_sakit'])->middleware('auth');
+Route::get('/izinAll', [AbsenAllController::class, 'absen_izin'])->middleware('auth');
+Route::get('/alfaAll', [AbsenAllController::class, 'absen_alfa'])->middleware('auth');
+Route::get('/hadirSemua', [AbsenAllController::class, 'hadir_semua'])->middleware('auth');
 
 
 

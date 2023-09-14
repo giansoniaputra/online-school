@@ -321,3 +321,13 @@ $(document).ready(function () {
         });
     }
 });
+
+//VANILA JAVASCRIPT
+//Vanila
+let angka = document.querySelector('#telepon_ortu')
+angka.addEventListener('keyup', function () {
+    let trim = angka.value.trim()
+    if (trim.charAt(0) == 0) {
+        angka.value = ""
+    }
+})

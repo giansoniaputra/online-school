@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Student;
 use Twilio\Rest\Client;
 use App\Models\AbsenAll;
 use Illuminate\Support\Str;
@@ -104,7 +105,6 @@ class AbsenAllController extends Controller
     public function input_absen(Request $request)
     {
         //Cek pakah Absen Pernah Dilakukan
-        return $request->unique_siswa;
         $siswa = DB::table('students as a')
             ->join('kelas as b', 'a.kelas', '=', 'b.unique')
             ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
@@ -127,7 +127,7 @@ class AbsenAllController extends Controller
                 ];
                 AbsenAll::create($data);
             }
-            return response()->json(['data' => 'Oke']);
+            return response()->json(['data' => AbsenAll::latest()->first()]);
         }
     }
 
@@ -135,10 +135,11 @@ class AbsenAllController extends Controller
     public function absen_hadir(Request $request)
     {
         AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "H"]);
-        $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta telah Menghadiri kelas pada hari ini tanggal " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
+        $siswa = Student::where('unique', $request->student_unique)->first();
+        $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
 
         // Ganti dengan nomor penerima WhatsApp yang sesuai
-        $nomorPenerima = 'whatsapp:+6282321634181';
+        $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
 
         //Kirim pesan menggunakan Twilio
         $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
@@ -162,6 +163,47 @@ class AbsenAllController extends Controller
         //             "body" => "Anda telah basen"
         //         )
         //     );
+        return response()->json(['success' => 'Berhasil']);
+    }
+    public function absen_sakit(Request $request)
+    {
+        AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "S"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+    public function absen_izin(Request $request)
+    {
+        AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "I"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+    public function absen_alfa(Request $request)
+    {
+        AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "A"]);
+        return response()->json(['success' => 'Berhasil']);
+    }
+
+    public function hadir_semua(Request $request)
+    {
+        AbsenAll::where('student_kelas', $request->kelas)->where('tanggal_absen', $request->tanggal)->update(['kehadiran' => "H"]);
+        $siswa = DB::table('absen_alls as a')
+            ->join('students as b', 'a.student_unique', 'b.unique')
+            ->where('student_kelas', $request->kelas)->where('tanggal_absen', $request->tanggal)
+            ->get();
+        foreach ($siswa as $row) {
+            $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$row->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal)), true);
+
+            // Ganti dengan nomor penerima WhatsApp yang sesuai
+            $nomorPenerima = 'whatsapp:+62' . $row->telepon_ortu;
+
+            //Kirim pesan menggunakan Twilio
+            $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+            $message = $twilio->messages->create(
+                $nomorPenerima,
+                [
+                    'from' => env('TWILIO_PHONE_NUMBER'),
+                    'body' => $pesan,
+                ]
+            );
+        }
         return response()->json(['success' => 'Berhasil']);
     }
 }

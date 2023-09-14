@@ -39,11 +39,15 @@
                             <th>Kelas</th>
                             <th>Tanggal Absen</th>
                             <th>Kehadiran</th>
-                            <th>Action</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                        <th colspan="5">Hadir Semuanya</th>
+                        <th id="hadir-semua" class="text-center"></th>
+                    </tfoot>
                 </table>
             </div>
             <!-- /.card-body -->
