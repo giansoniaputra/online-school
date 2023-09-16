@@ -133,8 +133,8 @@ class KelasController extends Controller
         return DataTables::of($query)->addColumn('action', function ($row) {
             $actionBtn =
                 '
-                <button class="btn btn-rounded btn-sm btn-warning text-dark edit-kelas-button" title="Edit Data" data-unique="' . $row->unique . '"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-rounded btn-sm btn-danger text-white delete-kelas-button" title="Hapus Data" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="fas fa-trash-alt"></i></button>';
+                <button class="btn btn-rounded btn-sm btn-warning text-dark edit-kelas-button" title="Edit Data" data-unique="' . $row->unique . '"><i class=" ri-edit-line"></i></button>
+                <button class="btn btn-rounded btn-sm btn-danger text-white delete-kelas-button" title="Hapus Data" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class=" ri-delete-bin-line"></i></button>';
             return $actionBtn;
         })->make(true);
     }

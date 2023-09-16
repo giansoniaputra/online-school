@@ -1,11 +1,15 @@
-@extends('layouts.main')
-@section('container')
+@extends('layouts.velonic')
+@section('container-velonic')
 <div class="row">
+    <div class="col-12 mb-3">
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal-kelas" id="btn-add-data">
+            <i class="ri-add-box-line"></i>&nbsp;<span>Tambah Siswa</span>
+        </button>
+    </div>
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <button type="button" class="btn btn-sm bg-gradient-primary" id="btn-add-data" data-toggle="modal" data-target="#modal-kelas">Tambah Data</button>
-            </div>
+            {{-- <div class="card-header">
+            </div> --}}
             <!-- /.card-header -->
             <div class="card-body">
                 <table id="table-kelas" class="table table-bordered table-striped">

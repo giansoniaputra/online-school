@@ -27,7 +27,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="table-siswa" class="table table-striped dt-responsive nowrap w-100">
+                <table id="table-siswa" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
