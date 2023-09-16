@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let table = $("#table-siswa").DataTable({
         responsive: true,
+        bLenghtChange: true,
         lengthChange: false,
         autoWidth: false,
         serverSide: true,
@@ -22,13 +23,13 @@ $(document).ready(function () {
                 },
             },
             {
+                data: "nama",
+            },
+            {
                 data: "nisn",
             },
             {
                 data: "nis",
-            },
-            {
-                data: "nama",
             },
             {
                 data: "kelas2",
@@ -78,6 +79,7 @@ $(document).ready(function () {
         $("#nama").val("");
         $("#tempat_lahir").val("");
         $("#tanggal_lahir").val("");
+        $("#telepon_ortu").val("");
         $("#alamat").val("");
         $("#asal_sekolah").val("");
         $("#telepon_ortu").val("");
@@ -262,7 +264,6 @@ $(document).ready(function () {
             }
         });
     });
-
     //Hendler Error
     function displayErrors(errors) {
         // menghapus class 'is-invalid' dan pesan error sebelumnya
@@ -279,6 +280,18 @@ $(document).ready(function () {
                 '<div class="invalid-feedback ml-2"></div>'
             );
 
+            $(".btn-close").on("click", function () {
+                inputElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                textAreaElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                selectElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+            });
+
             $.each(messages, function (index, message) {
                 feedbackElement.append(
                     $('<p class="p-0 m-0 text-center">' + message + "</p>")
@@ -294,8 +307,12 @@ $(document).ready(function () {
                 selectElement.addClass("is-invalid");
                 selectElement.after(feedbackElement);
             }
+            if (textAreaElement.length > 0) {
+                textAreaElement.addClass("is-invalid");
+                textAreaElement.after(feedbackElement);
+            }
             inputElement.each(function () {
-                if (inputElement.attr("type") == "text") {
+                if (inputElement.attr("type") == "text" || inputElement.attr("type") == "number") {
                     inputElement.on("click", function () {
                         $(this).removeClass("is-invalid");
                     });
@@ -304,6 +321,14 @@ $(document).ready(function () {
                     });
                 } else if (inputElement.attr("type") == "date") {
                     inputElement.on("change", function () {
+                        $(this).removeClass("is-invalid");
+                    });
+                } else if (inputElement.attr("type") == "password") {
+                    inputElement.on("click", function () {
+                        $(this).removeClass("is-invalid");
+                    });
+                } else if (inputElement.attr("type") == "email") {
+                    inputElement.on("click", function () {
                         $(this).removeClass("is-invalid");
                     });
                 }

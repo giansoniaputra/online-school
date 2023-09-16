@@ -81,6 +81,12 @@
                                 <p>Data Kelas</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/absen_all" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Absen Siswa</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif
@@ -120,9 +126,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/absen_all" class="nav-link">
+                            <a href="/roles" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Absen Siswa</p>
+                                <p>Costum Role</p>
                             </a>
                         </li>
                     </ul>

@@ -5,6 +5,7 @@ use App\Models\AbsenAll;
 use App\Models\TahunAjaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MatpelController;
@@ -82,6 +83,9 @@ Route::get('/izinAll', [AbsenAllController::class, 'absen_izin'])->middleware('a
 Route::get('/alfaAll', [AbsenAllController::class, 'absen_alfa'])->middleware('auth');
 Route::get('/hadirSemua', [AbsenAllController::class, 'hadir_semua'])->middleware('auth');
 
+//ROLES
+Route::resource('/roles', RoleController::class)->middleware('auth');
+
 
 
 //DATATABLES
@@ -94,3 +98,9 @@ Route::get('/datatablesBAP', [AbsenController::class, 'dataTablesBAP'])->middlew
 Route::get('/datatablesTahunAjaran', [TahunAjaranController::class, 'dataTables'])->middleware('auth');
 Route::get('/datatablesKelas', [KelasController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesUser', [AuthController::class, 'dataTables'])->middleware('auth');
+Route::get('/dataTablesRoles', [RoleController::class, 'dataTables'])->middleware('auth');
+
+
+Route::get('/test', function () {
+    return view('welcome');
+});
