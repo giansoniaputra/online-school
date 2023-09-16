@@ -1,14 +1,12 @@
 <!-- Modal -->
-<div class="modal fade" id="modal-tahun-ajaran" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="modal-tahun-ajaran" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title-modal"></h5>
-                <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+                <h5 class="modal-title ml-3" id="title-modal"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body" style="padding:0 2em">
                 <form action="javascript:;">
                     {{-- HIDDEN INPUT --}}
                     <input type="hidden" name="unique" id="unique">
@@ -16,19 +14,19 @@
                     @csrf
                     {{-- ./HIDDEN INPUT --}}
                     <div class="row pl-3 pr-3">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 mb-2 mt-2">
                             <div class="form-group">
                                 <label for="tahun_awal">Tahun Awal</label>
                                 <input type="number" class="form-control" id="tahun_awal" name="tahun_awal">
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 mb-2">
                             <div class="form-group">
                                 <label for="tahun_akhir">Tahun Akhir</label>
                                 <input type="number" class="form-control" id="tahun_akhir" name="tahun_akhir">
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 mb-2">
                             <div class="form-group">
                                 <label for="periode">Periode</label>
                                 <select class="form-control" name="periode" id="periode">

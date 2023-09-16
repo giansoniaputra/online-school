@@ -76,7 +76,7 @@ $(document).ready(function () {
     $("#btn-add-data").on("click", function () {
         $("#title-modal").html("Tambah Data Tahun Ajaran");
         $("#modal-tahun-ajaran #btn-action").html(
-            '<button type="button" class="btn btn-sm bg-gradient-primary" id="btn-save" data-toggle="modal" data-target="#modal-siswa">Tambah</button>'
+            '<button type="button" class="btn btn-sm bg-primary text-white" id="btn-save" data-bs-toggle="modal" data-target="#modal-siswa">Tambah</button>'
         );
         $("#modal-tahun-ajaran").modal("show");
     });
@@ -200,7 +200,7 @@ $(document).ready(function () {
         $("#method").val("PUT");
         $("#title-modal").html("Edit Data Tahun Ajaran");
         $("#modal-tahun-ajaran #btn-action").html(
-            '<button type="button" class="btn btn-sm bg-gradient-primary" id="btn-update" data-toggle="modal" data-target="#modal-siswa">Update</button>'
+            '<button type="button" class="btn btn-sm bg-primary text-white" id="btn-update" data-bs-toggle="modal" data-target="#modal-siswa">Update</button>'
         );
         $.ajax({
             data: {
