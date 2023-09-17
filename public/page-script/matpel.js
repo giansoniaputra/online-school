@@ -203,6 +203,18 @@ $(document).ready(function () {
                 '<div class="invalid-feedback ml-2"></div>'
             );
 
+            $(".btn-close").on("click", function () {
+                inputElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                textAreaElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                selectElement.each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+            });
+
             $.each(messages, function (index, message) {
                 feedbackElement.append(
                     $('<p class="p-0 m-0 text-center">' + message + "</p>")
@@ -218,8 +230,12 @@ $(document).ready(function () {
                 selectElement.addClass("is-invalid");
                 selectElement.after(feedbackElement);
             }
+            if (textAreaElement.length > 0) {
+                textAreaElement.addClass("is-invalid");
+                textAreaElement.after(feedbackElement);
+            }
             inputElement.each(function () {
-                if (inputElement.attr("type") == "text") {
+                if (inputElement.attr("type") == "text" || inputElement.attr("type") == "number") {
                     inputElement.on("click", function () {
                         $(this).removeClass("is-invalid");
                     });
@@ -228,6 +244,14 @@ $(document).ready(function () {
                     });
                 } else if (inputElement.attr("type") == "date") {
                     inputElement.on("change", function () {
+                        $(this).removeClass("is-invalid");
+                    });
+                } else if (inputElement.attr("type") == "password") {
+                    inputElement.on("click", function () {
+                        $(this).removeClass("is-invalid");
+                    });
+                } else if (inputElement.attr("type") == "email") {
+                    inputElement.on("click", function () {
                         $(this).removeClass("is-invalid");
                     });
                 }

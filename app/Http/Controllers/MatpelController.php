@@ -120,8 +120,8 @@ class MatpelController extends Controller
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
-                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-matpel-button" title="Edit Siswa" data-unique="' . $row->unique . '">Edit</button>
-                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-matpel-button" title="Edit Siswa" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '">Hapus</button>';
+                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-matpel-button" title="Edit Siswa" data-unique="' . $row->unique . '"><i class=" ri-edit-line"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-matpel-button" title="Edit Siswa" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class=" ri-delete-bin-line"></i></button>';
                 return $actionBtn;
             })->make(true);
         }
