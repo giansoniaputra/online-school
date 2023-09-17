@@ -1,22 +1,20 @@
 <!-- Modal -->
-<div class="modal fade" id="modal-ampu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal fade" id="modal-ampu" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title-modal">Mata Pelajaran yang Diampu</h5>
-                <button type="button" class="close btn-close-ampu" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+                <h5 class="modal-title ml-3" id="title-modal">Ampuan Mata Pelajaran</h5>
+                <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body" style="padding:0 2em">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header"></div>
+                            {{-- <div class="card-header"></div> --}}
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <input type="hidden" id="unique-guru">
-                                <table id="table-ampuan" class="table table-bordered table-striped">
+                                <table id="table-ampuan" class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -34,9 +32,9 @@
                                             <td>{{ $i++ }}</td>
                                             <td>{{ $matpel->nama_matpel }}</td>
                                             <td>{{ $matpel->kelas }}</td>
-                                            <td class="text-center">
-                                                <button class="btn btn-rounded btn-sm btn-info text-white ampu-button" title="Ampu" unique-matpel="{{ $matpel->unique }}"><i class="fas fa-plus"></i></button>
-                                                <button class="btn btn-rounded btn-sm btn-info text-white lepas-button" title="Lepas" unique-matpel="{{ $matpel->unique }}"><i class="fas fa-minus"></i></button>
+                                            <td class="text-center d-flex justify-content-center align-items-center">
+                                                <button class="btn btn-sm btn-success text-white ampu-button rounded-circle me-1" title="Ampu" unique-matpel="{{ $matpel->unique }}"><i class=" ri-add-circle-line"></i></button>
+                                                <button class="btn btn-sm btn-dangers text-white lepas-button rounded-circle" title="Lepas" unique-matpel="{{ $matpel->unique }}"><i class="ri-close-circle-fill"></i></button>
                                             </td>
                                         </tr>
                                         @endforeach

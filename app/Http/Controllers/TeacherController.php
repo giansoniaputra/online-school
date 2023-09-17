@@ -160,9 +160,9 @@ class TeacherController extends Controller
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
-                    <button class="btn btn-rounded btn-sm btn-info text-white ampu-guru-button" title="Edit guru" data-unique="' . $row->unique . '">Ampuan</button>
-                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-guru-button" title="Edit guru" data-unique="' . $row->unique . '">Edit</button>
-                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-guru-button" title="Edit guru" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '">Hapus</button>';
+                    <button class="btn btn-rounded btn-sm btn-info text-white ampu-guru-button" title="Ampuan" data-unique="' . $row->unique . '"><i class="ri-book-mark-line"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-warning text-dark edit-guru-button" title="Edit Data Guru" data-unique="' . $row->unique . '"><i class="ri-edit-2-line"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-guru-button" title="Hapus Data Guru" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="ri-delete-bin-line"></i></button>';
                 return $actionBtn;
             })->make(true);
         }

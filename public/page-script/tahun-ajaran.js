@@ -76,7 +76,7 @@ $(document).ready(function () {
     $("#btn-add-data").on("click", function () {
         $("#title-modal").html("Tambah Data Tahun Ajaran");
         $("#modal-tahun-ajaran #btn-action").html(
-            '<button type="button" class="btn btn-sm bg-primary text-white" id="btn-save" data-bs-toggle="modal" data-target="#modal-siswa">Tambah</button>'
+            '<button type="button" class="btn btn-sm bg-primary text-white" id="btn-save">Tambah</button>'
         );
         $("#modal-tahun-ajaran").modal("show");
     });
