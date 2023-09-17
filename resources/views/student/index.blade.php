@@ -7,8 +7,8 @@
         </button>
     </div>
     <div class="col-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card" style="border-radius:20px">
+            <div class="card-header" style="border-radius:20px 20px 0 0">
                 <form action="">
                     <div class="row">
                         <div class="col-sm-3">

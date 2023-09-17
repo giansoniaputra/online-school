@@ -34,7 +34,7 @@
                                             <td>{{ $matpel->kelas }}</td>
                                             <td class="text-center d-flex justify-content-center align-items-center">
                                                 <button class="btn btn-sm btn-success text-white ampu-button rounded-circle me-1" title="Ampu" unique-matpel="{{ $matpel->unique }}"><i class=" ri-add-circle-line"></i></button>
-                                                <button class="btn btn-sm btn-dangers text-white lepas-button rounded-circle" title="Lepas" unique-matpel="{{ $matpel->unique }}"><i class="ri-close-circle-fill"></i></button>
+                                                <button class="btn btn-sm btn-danger text-white lepas-button rounded-circle" title="Lepas" unique-matpel="{{ $matpel->unique }}"><i class="ri-close-circle-fill"></i></button>
                                             </td>
                                         </tr>
                                         @endforeach

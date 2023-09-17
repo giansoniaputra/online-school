@@ -1,7 +1,18 @@
 $(document).ready(function () {
     let table = $("#table-user").DataTable({
         responsive: true,
-        lengthChange: false,
+        responsive: !0,
+        language: {
+            paginate: {
+                previous: "<i class='ri-arrow-left-s-line'>",
+                next: "<i class='ri-arrow-right-s-line'>",
+            },
+        },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass(
+                "pagination-rounded"
+            );
+        },
         autoWidth: false,
         serverSide: true,
         ajax: {

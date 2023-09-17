@@ -15,8 +15,8 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header" id="tambah-bap">
+                        <div class="card" style="border-radius:20px">
+                            <div class="card-header" style="border-radius:20px 20px 0 0" id="tambah-bap">
                                 <form action="">
                                     <div class="row">
                                         <div class="input-group mb-1 col-sm-3">

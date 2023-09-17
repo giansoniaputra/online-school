@@ -1,9 +1,20 @@
 $(document).ready(function () {
     let table = $("#table-tahun-ajaran").DataTable({
         responsive: true,
-        lengthChange: false,
         autoWidth: false,
         serverSide: true,
+        responsive: !0,
+        language: {
+            paginate: {
+                previous: "<i class='ri-arrow-left-s-line'>",
+                next: "<i class='ri-arrow-right-s-line'>",
+            },
+        },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass(
+                "pagination-rounded"
+            );
+        },
         ajax: "/datatablesTahunAjaran",
         columns: [
             {
@@ -62,6 +73,7 @@ $(document).ready(function () {
             },
         ],
     });
+    new $.fn.dataTable.FixedHeader(table);
     //Reset Form
     $(".btn-close").on("click", function () {
         $("#title-modal").html("");

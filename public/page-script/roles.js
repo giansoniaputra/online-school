@@ -3,7 +3,18 @@ $(document).ready(function () {
         processing: true,
         responsive: true,
         searching: true,
-        bLengthChange: true,
+        responsive: !0,
+        language: {
+            paginate: {
+                previous: "<i class='ri-arrow-left-s-line'>",
+                next: "<i class='ri-arrow-right-s-line'>",
+            },
+        },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass(
+                "pagination-rounded"
+            );
+        },
         info: false,
         ordering: true,
         serverSide: true,
