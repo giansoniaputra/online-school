@@ -3,6 +3,7 @@
 use App\Models\Kelas;
 use App\Models\AbsenAll;
 use App\Models\TahunAjaran;
+use App\Models\JenisPembayaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AbsenAllController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\JenisPembayaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +88,8 @@ Route::get('/hadirSemua', [AbsenAllController::class, 'hadir_semua'])->middlewar
 //ROLES
 Route::resource('/roles', RoleController::class)->middleware('auth');
 
+//JENIS PEMBAYARAN
+Route::resource('/jenis_pembayaran', JenisPembayaranController::class)->middleware('auth');
 
 
 //DATATABLES
@@ -99,6 +103,7 @@ Route::get('/datatablesTahunAjaran', [TahunAjaranController::class, 'dataTables'
 Route::get('/datatablesKelas', [KelasController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesUser', [AuthController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesRoles', [RoleController::class, 'dataTables'])->middleware('auth');
+Route::get('/dataTablesJenisPembayaran', [JenisPembayaranController::class, 'dataTables'])->middleware('auth');
 
 
 Route::get('/test', function () {

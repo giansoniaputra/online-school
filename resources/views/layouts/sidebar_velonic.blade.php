@@ -95,6 +95,24 @@
                     @endif
                 </div>
             </li>
+            @if(auth()->user()->role == 'ADMIN')
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages3" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
+                    <i class="ri-pages-line"></i>
+                    <span> Keuangan </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                @endif
+                <div class="collapse" id="sidebarPages3">
+                    @if(auth()->user()->role == 'ADMIN')
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/jenis_pembayaran">Jenis Pembayaran</a>
+                        </li>
+                    </ul>
+                    @endif
+                </div>
+            </li>
 
 
         </ul>
