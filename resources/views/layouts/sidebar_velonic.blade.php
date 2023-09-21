@@ -34,7 +34,7 @@
                     <span> Dashboard </span>
                 </a>
             </li>
-
+            @if( auth()->user()->role == 'ADMIN')
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
                     <i class="ri-pages-line"></i>
@@ -69,23 +69,30 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(auth()->user()->role == 'GURU' || auth()->user()->role == 'ADMIN')
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPages2" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
                     <i class="ri-pages-line"></i>
                     <span> Presensi </span>
                     <span class="menu-arrow"></span>
                 </a>
+                @endif
                 <div class="collapse" id="sidebarPages2">
+                    @if(auth()->user()->role == 'GURU')
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="/absen">Agenda Pembelajaran</a>
                         </li>
                     </ul>
+                    @endif
+                    @if(auth()->user()->role == 'ADMIN')
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="/absen_all">Absen Siswa</a>
                         </li>
                     </ul>
+                    @endif
                 </div>
             </li>
 
