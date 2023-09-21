@@ -31,8 +31,12 @@ $tahun = TahunAjaran::where('status', '1')->first();
 
     <!-- Icons css -->
     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    {{-- JQUERY --}}
     <script src="/page-script/jquery.js"></script>
+    {{-- SWEET ALERT --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- LOADER --}}
     <style>
         .spinner {
             width: 56px;
@@ -467,6 +471,14 @@ $tahun = TahunAjaran::where('status', '1')->first();
     <script src="/assets/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="/assets/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
     <script src="/assets/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
+
+
+
+    <!-- Bootstrap Wizard Form js -->
+    <script src="/assets/vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <!-- Wizard Form Demo js -->
+    <script src="/assets/js/pages/form-wizard.init.js"></script>
 
     <!-- App js -->
     <script src="/assets/js/app.min.js"></script>

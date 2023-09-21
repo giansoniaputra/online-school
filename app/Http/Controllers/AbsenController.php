@@ -26,8 +26,8 @@ class AbsenController extends Controller
         $unique = Teacher::where('npk', auth()->user()->username)->first();
         if ($unique) {
             $data = [
-                'title_page' => 'BAP',
-                'title' => 'Barita Acara Pemeriksaan',
+                'title_page' => 'Agenda Pembelajaran',
+                'title' => 'Agenda Pembelajaran',
                 'matpels' => DB::table('ampuans as a')
                     ->join('matpels as b', 'a.matpel_unique', '=', 'b.unique')
                     ->select('a.*', 'b.nama_matpel', 'b.kelas')

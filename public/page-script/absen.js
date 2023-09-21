@@ -70,8 +70,18 @@ $(document).ready(function () {
     });
     let table2 = $("#table-bap").DataTable({
         responsive: true,
-        lengthChange: false,
-        processing: true,
+        responsive: !0,
+        language: {
+            paginate: {
+                previous: "<i class='ri-arrow-left-s-line'>",
+                next: "<i class='ri-arrow-right-s-line'>",
+            },
+        },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass(
+                "pagination-rounded"
+            );
+        },
         autoWidth: false,
         serverSide: true,
         ajax: {
@@ -404,8 +414,8 @@ $(document).ready(function () {
     });
     //Mulai Absen
     $("#table-bap").on("click", ".absen-button", function () {
-        $("#tab1-tab").removeClass("active");
-        $("#tab2-tab").addClass("active");
+        $("#basictab1").removeClass("active");
+        $("#basictab2").addClass("active");
         $("#tab1").removeClass("show active");
         $("#tab2").addClass("show active");
         let unique_bap = $(this).attr("data-unique");
