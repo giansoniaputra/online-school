@@ -9,8 +9,8 @@
             <div class="modal-body" style="padding:0 2em">
                 <form action="javascript:;">
                     {{-- HIDDEN INPUT --}}
-                    <input type="text" name="unique" id="unique">
-                    <input type="text" name="_method" id="method">
+                    <input type="hidden" name="unique" id="unique">
+                    <input type="hidden" name="_method" id="method">
                     @csrf
                     {{-- ./HIDDEN INPUT --}}
                     <div class="form-group mt-2 mb-2">

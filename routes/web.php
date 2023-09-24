@@ -3,6 +3,7 @@
 use App\Models\Kelas;
 use App\Models\AbsenAll;
 use App\Models\TahunAjaran;
+use App\Models\SettingTagihan;
 use App\Models\JenisPembayaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AbsenAllController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\SettingTagihanController;
 use App\Http\Controllers\JenisPembayaranController;
 
 /*
@@ -91,6 +93,12 @@ Route::resource('/roles', RoleController::class)->middleware('auth');
 //JENIS PEMBAYARAN
 Route::resource('/jenis_pembayaran', JenisPembayaranController::class)->middleware('auth');
 
+//SETTING TAGIHAN
+Route::resource('/setting_tagihan', SettingTagihanController::class)->middleware('auth');
+Route::get('/updateNominal', [SettingTagihanController::class, 'update_nominal'])->middleware('auth');
+Route::get('/cekDataTagihan', [SettingTagihanController::class, 'cek_data_tagihan'])->middleware('auth');
+Route::post('/settingTagihan', [SettingTagihanController::class, 'setting_tagihan'])->middleware('auth');
+
 
 //DATATABLES
 Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
@@ -104,6 +112,7 @@ Route::get('/datatablesKelas', [KelasController::class, 'dataTables'])->middlewa
 Route::get('/dataTablesUser', [AuthController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesRoles', [RoleController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesJenisPembayaran', [JenisPembayaranController::class, 'dataTables'])->middleware('auth');
+Route::get('/dataTablesSettingTagihan', [SettingTagihanController::class, 'dataTables'])->middleware('auth');
 
 
 Route::get('/test', function () {

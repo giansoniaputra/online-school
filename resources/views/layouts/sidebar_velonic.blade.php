@@ -110,6 +110,11 @@
                             <a href="/jenis_pembayaran">Jenis Pembayaran</a>
                         </li>
                     </ul>
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/setting_tagihan">Setting Tagihan</a>
+                        </li>
+                    </ul>
                     @endif
                 </div>
             </li>
