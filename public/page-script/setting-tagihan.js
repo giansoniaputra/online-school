@@ -49,6 +49,7 @@ $(document).ready(function () {
     }
 
     $("#action-button").on("click", "#btn-setting", function () {
+        $(this).attr("disabled", "true");
         for (m in select) {
             let input = $(`#${m}`);
             if (input.val() === null) {
@@ -71,6 +72,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 $("#spinner").html("")
+                $("#action-button").html("")
                 table.ajax.reload();
                 Swal.fire("Good job!", response.success, "success");
             },
