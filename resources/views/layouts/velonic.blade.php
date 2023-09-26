@@ -235,11 +235,11 @@ $tahun = TahunAjaran::where('status', '1')->first();
                         </div>
                     </div>
                     <!-- end page title -->
-                    <div id="spinner">
+                    {{-- <div id="spinner">
                         <div class="card d-flex justify-conten-center align-items-center card-spinner d-none">
                             <div class="spinner" style="position:relative;z-index: 101;"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     @yield('container-velonic')
                 </div> <!-- container -->
 
@@ -456,6 +456,10 @@ $tahun = TahunAjaran::where('status', '1')->first();
 
     <!-- Vendor js -->
     <script src="/assets/js/vendor.min.js"></script>
+    {{-- Simple Money Format --}}
+    <script src="/page-script/simple.money.format.js"></script>
+    <script src="/page-script/simple.money.format.init.js"></script>
+    {{-- !Simple Money Format --}}
 
     <!-- Datatables js -->
     <script src="/assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>

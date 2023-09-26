@@ -123,7 +123,6 @@ $(document).ready(function () {
             }
         });
         table.ajax.reload()
-        table.ajax.reload()
     })
 
     //Ketika Nominal Di Klik
@@ -137,9 +136,14 @@ $(document).ready(function () {
         element.after(`
         <form class="d-inline form-nominal" action="javascript:;">
             <input type="hidden" name="unique" value="${unique}"/>
-            <input type="text" class="form-control input-autofocus" name="nominal" style="width:20vh" value="${nominal}">
+            <input type="text" class="form-control input-autofocus money" name="nominal" style="width:20vh" value="${nominal}">
         </form>
         `)
+        $("input.money").simpleMoneyFormat({
+            currencySymbol: "Rp",
+            decimalPlaces: 0,
+            thousandsSeparator: ".",
+        });
         $("#table-setting-tagihan .input-autofocus").focus();
         $("#table-setting-tagihan .form-nominal").submit(function () {
             let formdata = $('#table-setting-tagihan .form-nominal').serializeArray();

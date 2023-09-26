@@ -100,7 +100,7 @@ class SettingTagihanController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => "Nominal tidak boleh kosong"]);
         } else {
-            SettingTagihan::where('unique', $reqeust->unique)->update(['nominal' => $reqeust->nominal]);
+            SettingTagihan::where('unique', $reqeust->unique)->update(['nominal' => preg_replace('/[,]/', '', $reqeust->nominal)]);
             return response()->json(['success' => 'Oke']);
         }
     }
@@ -120,16 +120,24 @@ class SettingTagihanController extends Controller
     public function setting_tagihan(Request $request)
     {
         $kelas = Kelas::all();
+        $jenis = JenisPembayaran::all();
         foreach ($kelas as $row) {
-            $data = [
-                'unique' => Str::orderedUuid(),
-                'unique_jenis_pembayaran' => $request->unique_jenis_pembayaran,
-                'unique_tahun_ajaran' => $request->unique_tahun_ajaran,
-                'unique_kelas' => $row->unique,
-                'nominal' => 0
-            ];
-            SettingTagihan::create($data);
+            foreach ($jenis as $row2) {
+                $data = [
+                    'unique' => Str::orderedUuid(),
+                    'unique_jenis_pembayaran' => $row2->unique,
+                    'unique_tahun_ajaran' => $request->unique_tahun_ajaran,
+                    'unique_kelas' => $row->unique,
+                    'nominal' => 0
+                ];
+                SettingTagihan::create($data);
+            }
         }
         return response()->json(['success' => 'Tagihan Berhasil Setting']);
+    }
+
+    public function cari_siswa(Request $request)
+    {
+        return response()->json(['success' => $request->all()]);
     }
 }

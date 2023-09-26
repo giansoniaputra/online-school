@@ -172,7 +172,8 @@ class AbsenController extends Controller
                 $query = DB::table('b_a_p_s as a')
                     ->join('matpels as b', 'a.matpel_unique', "=", "b.unique")
                     ->join('tahun_ajarans as c', 'a.tahun_ajaran_unique', "=", "c.unique")
-                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir")
+                    ->join('kelas as d', 'a.kelas', "=", "d.unique")
+                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir", DB::raw('CONCAT(d.kelas, d.huruf) as kelas_siswa'))
                     ->where('a.guru_unique', auth()->user()->unique)
                     ->where('a.tahun_ajaran_unique', $request->tahun_ajaran)
                     ->get();
@@ -180,7 +181,8 @@ class AbsenController extends Controller
                 $query = DB::table('b_a_p_s as a')
                     ->join('matpels as b', 'a.matpel_unique', "=", "b.unique")
                     ->join('tahun_ajarans as c', 'a.tahun_ajaran_unique', "=", "c.unique")
-                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir")
+                    ->join('kelas as d', 'a.kelas', "=", "d.unique")
+                    ->select("a.*", "b.nama_matpel", "b.kelas as kelas2", "c.tahun_awal", "c.tahun_akhir", DB::raw('CONCAT(d.kelas, d.huruf) as kelas_siswa'))
                     ->where('a.guru_unique', auth()->user()->unique)
                     ->where('a.matpel_unique', $request->f_matpel)
                     ->where('a.tahun_ajaran_unique', $request->tahun_ajaran)
@@ -229,7 +231,7 @@ class AbsenController extends Controller
                 <select class="form-control" name="kelas" id="kelas">
                     <option selected disabled value="">Pilih Kelas...</option>';
         foreach ($kelas as $row) {
-            echo '<option value="' . $row->kelas . $row->huruf . '">' . $row->kelas . $row->huruf . '</option>';
+            echo '<option value="' . $row->unique . '">' . $row->kelas . $row->huruf . '</option>';
         }
         echo '</select>
             </div>
@@ -241,8 +243,8 @@ class AbsenController extends Controller
     {
         $siswa = DB::table('students as a')
             ->join('kelas as b', 'a.kelas', '=', 'b.unique')
-            ->select('a.*', 'b.kelas as kelas2', 'b.huruf')
-            ->where(DB::raw('CONCAT(b.kelas, b.huruf)'), $request->kelas)
+            ->select('a.*', 'b.unique as unique_kelas')
+            ->where('b.unique', $request->kelas)
             ->get();
         $cek = Absen::where('bap_unique', $request->unique_bap)->first();
         $bap = BAP::where('unique', $request->unique_bap)->first();
@@ -253,7 +255,7 @@ class AbsenController extends Controller
                 $data = [
                     'unique' => Str::orderedUuid(),
                     'student_unique' => $row->unique,
-                    'student_kelas' => $row->kelas . $row->huruf,
+                    'student_kelas' => $row->unique_kelas,
                     'bap_unique' => $bap->unique,
                     'tahun_ajaran_unique' => $request->tahun_ajaran,
                     'tanggal_absen' => $bap->tanggal_bap,

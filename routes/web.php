@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\Kelas;
-use App\Models\AbsenAll;
-use App\Models\TahunAjaran;
-use App\Models\SettingTagihan;
-use App\Models\JenisPembayaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -17,6 +12,7 @@ use App\Http\Controllers\AbsenAllController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\SettingTagihanController;
+use App\Http\Controllers\GenerateTagihanController;
 use App\Http\Controllers\JenisPembayaranController;
 
 /*
@@ -93,11 +89,18 @@ Route::resource('/roles', RoleController::class)->middleware('auth');
 //JENIS PEMBAYARAN
 Route::resource('/jenis_pembayaran', JenisPembayaranController::class)->middleware('auth');
 
+//GENERATE TAGIHAN
+Route::resource('/generate_tagihan', GenerateTagihanController::class)->middleware('auth');
+Route::get('/cekSettingTagihan', [GenerateTagihanController::class, 'cek_setting_tagihan'])->middleware('auth');
+Route::get('/generateTagihan', [GenerateTagihanController::class, 'generate_tagihan'])->middleware('auth');
+
+
 //SETTING TAGIHAN
 Route::resource('/setting_tagihan', SettingTagihanController::class)->middleware('auth');
 Route::get('/updateNominal', [SettingTagihanController::class, 'update_nominal'])->middleware('auth');
 Route::get('/cekDataTagihan', [SettingTagihanController::class, 'cek_data_tagihan'])->middleware('auth');
 Route::post('/settingTagihan', [SettingTagihanController::class, 'setting_tagihan'])->middleware('auth');
+Route::get('/cariSiswa', [SettingTagihanController::class, 'cari_siswa'])->middleware('auth');
 
 
 //DATATABLES
@@ -113,6 +116,8 @@ Route::get('/dataTablesUser', [AuthController::class, 'dataTables'])->middleware
 Route::get('/dataTablesRoles', [RoleController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesJenisPembayaran', [JenisPembayaranController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesSettingTagihan', [SettingTagihanController::class, 'dataTables'])->middleware('auth');
+Route::get('/dataTablesListTagihan', [GenerateTagihanController::class, 'dataTables_list_tagihan'])->middleware('auth');
+Route::get('/dataTablesTagihanSiswaGenerate', [GenerateTagihanController::class, 'dataTables_tagihan_siswa_generate'])->middleware('auth');
 
 
 Route::get('/test', function () {

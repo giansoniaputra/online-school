@@ -115,6 +115,11 @@
                             <a href="/setting_tagihan">Setting Tagihan</a>
                         </li>
                     </ul>
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/generate_tagihan">Generate Tagihan</a>
+                        </li>
+                    </ul>
                     @endif
                 </div>
             </li>

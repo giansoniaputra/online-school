@@ -106,7 +106,7 @@ $(document).ready(function () {
                 data: "nama_matpel",
             },
             {
-                data: "kelas",
+                data: "kelas_siswa",
             },
             {
                 data: "pertemuan",
