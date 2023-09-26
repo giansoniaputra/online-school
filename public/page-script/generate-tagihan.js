@@ -141,25 +141,31 @@ $(document).ready(function () {
         $(formdata).each(function (index, obj) {
             data[obj.name] = obj.value;
         });
+        let jenis = formdata.map(a => a.name);
+        if (!jenis[2]) {
+            Swal.fire("Warning!", `Silahkan Pilih Jenis Pembayaran yang Ingin Digenerate`, "warning");
+            $("#spinner").html("")
+        } else {
+            $.ajax({
+                data: form.serialize(),
+                url: "/cariSiswa",
+                type: "GET",
+                dataType: 'json',
+                success: function (response) {
+                    $("#spinner").html("")
+                    $("#unique_kelas").val(response.success.unique_kelas);
+                    $("#unique_tagihan").val(response.success.jenis);
+                    table_siswa.ajax.reload();
+                    $("#table-tagihan-siswa").parent().addClass("d-flex justify-content-center")
+                    $("#table-tagihan-siswa").css({
+                        width: "20000px"
+                    })
+                    $("#modal-tagihan-siswa").modal("show")
+                    $("#modal-generate-tagihan").modal("hide")
+                }
+            });
+        }
 
-        $.ajax({
-            data: form.serialize(),
-            url: "/cariSiswa",
-            type: "GET",
-            dataType: 'json',
-            success: function (response) {
-                $("#spinner").html("")
-                $("#unique_kelas").val(response.success.unique_kelas);
-                $("#unique_tagihan").val(response.success.jenis);
-                table_siswa.ajax.reload();
-                $("#table-tagihan-siswa").parent().addClass("d-flex justify-content-center")
-                $("#table-tagihan-siswa").css({
-                    width: "20000px"
-                })
-                $("#modal-tagihan-siswa").modal("show")
-                $("#modal-generate-tagihan").modal("hide")
-            }
-        });
     })
     $(".btn-close-siswa").on("click", function () {
         $("#modal-generate-tagihan").modal("show")
