@@ -237,7 +237,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: 'json',
             success: function (response) {
-                // console.log(response);
+                console.log(response);
                 // Panggil callback setelah permintaan AJAX selesai
                 if (typeof callback === 'function') {
                     callback();

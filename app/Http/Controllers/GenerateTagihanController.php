@@ -119,6 +119,7 @@ class GenerateTagihanController extends Controller
         $tagihan = explode(",", $request->unique_tagihan);
         $siswa = $request->unique_siswa;
         $tahun = $request->unique_tahun_ajaran;
+        $count = 1;
         foreach ($tagihan as $row) {
             $cek = GenerateTagihan::where('unique_tahun_ajaran', $tahun)
                 ->where('unique_tagihan', $row)
@@ -132,9 +133,10 @@ class GenerateTagihanController extends Controller
                 'status' => 0
             ];
             if (!$cek) {
+                $count++;
                 GenerateTagihan::create($data);
             }
         }
-        return response()->json(['success' => 'oke']);
+        return response()->json(['success' => $count]);
     }
 }

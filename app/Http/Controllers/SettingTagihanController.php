@@ -120,18 +120,15 @@ class SettingTagihanController extends Controller
     public function setting_tagihan(Request $request)
     {
         $kelas = Kelas::all();
-        $jenis = JenisPembayaran::all();
         foreach ($kelas as $row) {
-            foreach ($jenis as $row2) {
-                $data = [
-                    'unique' => Str::orderedUuid(),
-                    'unique_jenis_pembayaran' => $row2->unique,
-                    'unique_tahun_ajaran' => $request->unique_tahun_ajaran,
-                    'unique_kelas' => $row->unique,
-                    'nominal' => 0
-                ];
-                SettingTagihan::create($data);
-            }
+            $data = [
+                'unique' => Str::orderedUuid(),
+                'unique_jenis_pembayaran' => $request->unique_jenis_pembayaran,
+                'unique_tahun_ajaran' => $request->unique_tahun_ajaran,
+                'unique_kelas' => $row->unique,
+                'nominal' => 0
+            ];
+            SettingTagihan::create($data);
         }
         return response()->json(['success' => 'Tagihan Berhasil Setting']);
     }
