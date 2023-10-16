@@ -14,6 +14,7 @@ use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\SettingTagihanController;
 use App\Http\Controllers\GenerateTagihanController;
 use App\Http\Controllers\JenisPembayaranController;
+use App\Http\Controllers\TagihanSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +28,7 @@ use App\Http\Controllers\JenisPembayaranController;
 */
 
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('/home', function () {
-    $data = [
-        'title_page' => 'Dashborad',
-        'title' => 'Dashborad',
-    ];
-    return view('dashboard.index', $data);
-})->middleware('auth');
+Route::get('/home', [DashboardController::class, 'index'])->middleware('auth');
 Route::resource("/user", AuthController::class)->middleware('auth');
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
 Route::get('/auth', [AuthController::class, 'index'])->name('login')->middleware('guest');
@@ -94,6 +89,12 @@ Route::resource('/generate_tagihan', GenerateTagihanController::class)->middlewa
 Route::get('/cekSettingTagihan', [GenerateTagihanController::class, 'cek_setting_tagihan'])->middleware('auth');
 Route::get('/generateTagihan', [GenerateTagihanController::class, 'generate_tagihan'])->middleware('auth');
 
+//TAGIHAN SISWA
+Route::resource('/tagihan_siswa', TagihanSiswaController::class)->middleware('auth');
+Route::get('/pilihSiswa', [TagihanSiswaController::class, 'pilih_siswa'])->middleware('auth');
+Route::get('/getDataTagihan', [TagihanSiswaController::class, 'get_data_tagihan'])->middleware('auth');
+Route::get('/getDataTagihanLunas', [TagihanSiswaController::class, 'get_data_tagihan_lunas'])->middleware('auth');
+Route::get('/cekCurrentTagihan', [TagihanSiswaController::class, 'cek_tagihan_terbayar'])->middleware('auth');
 
 //SETTING TAGIHAN
 Route::resource('/setting_tagihan', SettingTagihanController::class)->middleware('auth');

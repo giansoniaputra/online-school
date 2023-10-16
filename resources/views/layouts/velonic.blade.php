@@ -29,10 +29,14 @@ $tahun = TahunAjaran::where('status', '1')->first();
     <!-- App css -->
     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
+    <!-- Select2 css -->
+    <link href="/assets/vendor/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+
     <!-- Icons css -->
     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     {{-- JQUERY --}}
     <script src="/page-script/jquery.js"></script>
+
     {{-- SWEET ALERT --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -475,6 +479,16 @@ $tahun = TahunAjaran::where('status', '1')->first();
     <script src="/assets/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="/assets/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
     <script src="/assets/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2({
+                placeholder: "Pilih Data Siswa"
+                , allowClear: true
+            });
+        })
+
+    </script>
 
 
 

@@ -120,6 +120,11 @@
                             <a href="/generate_tagihan">Generate Tagihan</a>
                         </li>
                     </ul>
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/tagihan_siswa">Tagihan Siswa</a>
+                        </li>
+                    </ul>
                     @endif
                 </div>
             </li>

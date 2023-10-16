@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('generate_tagihans', function (Blueprint $table) {
+        Schema::create('tagihan_siswas', function (Blueprint $table) {
             $table->id();
             $table->uuid('unique')->unique();
+            $table->string('unique_student');
+            $table->string('unique_kelas');
             $table->string('unique_tahun_ajaran');
-            $table->string('unique_tagihan');
-            $table->string('unique_siswa');
-            $table->integer('status');
+            $table->string('unique_jenis_pembayaran');
+            $table->string('unique_generate');
+            $table->string('periode_tagihan');
+            $table->date('tanggal_bayar');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('generate_tagihans');
+        Schema::dropIfExists('tagihan_siswas');
     }
 };
