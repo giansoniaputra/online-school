@@ -54,6 +54,11 @@
                     </ul>
                     <ul class="side-nav-second-level">
                         <li>
+                            <a href="/histori-kelas">Histori Kelas/Naik Kelas</a>
+                        </li>
+                    </ul>
+                    <ul class="side-nav-second-level">
+                        <li>
                             <a href="/matpel">Mata Pelajaran</a>
                         </li>
                     </ul>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Absen;
+use App\Models\HistoriKelas;
 use App\Models\Kelas;
 use App\Models\Student;
 use Illuminate\Support\Str;
@@ -90,6 +91,14 @@ class StudentController extends Controller
             ];
             Student::create($data);
             User::create($data_user);
+            //Ambil Unique Siswa Terakhir
+            $last = Student::latest()->first();
+            $data_histori_kelas = [
+                'unique' => Str::orderedUuid(),
+                'unique_student' => $last->unique,
+                'unique_kelas' => $request->kelas,
+            ];
+            HistoriKelas::create($data_histori_kelas);
             return response()->json(['success' => 'Data Berhasi Disimpan']);
         }
     }
@@ -135,8 +144,12 @@ class StudentController extends Controller
             $pesan["nis.unique"] = 'Data nis sudah terdaftar';
         }
 
-        if ($student->nisn !== $request->nisn) {
-            $rules["nisn"] = 'unique:students';
+        if ($student->nisn == $request->nisn) {
+            $rules["nisn"] = 'required';
+            $pesan["nisn.required"] = 'NISN tidak boleh kosong';
+        } else {
+            $rules["nisn"] = 'required|unique:students';
+            $pesan["nisn.required"] = 'NISN tidak boleh kosong';
             $pesan["nisn.unique"] = 'Data NISN sudah terdaftar';
         }
         $validator = Validator::make($request->all(), $rules, $pesan);
@@ -170,6 +183,9 @@ class StudentController extends Controller
                 'role' => 'SISWA',
             ];
             User::where('username', $student->nis)->update($data_user);
+            HistoriKelas::where('unique_student', $student->unique)
+                ->where('unique_kelas', $student->kelas)
+                ->update(['unique_kelas' => $request->kelas]);
             Student::where('unique', $student->unique)->update($data);
             return response()->json(['success' => 'Data Berhasi Diupdate']);
         }
@@ -185,6 +201,7 @@ class StudentController extends Controller
             return response()->json(['errors' => 'Data Siswa Tidak Bisa Dihapus']);
         } else {
             Student::where('unique', $student->unique)->delete();
+            HistoriKelas::where('unique_student', $student->unique)->delete();
             User::where('username', $student->nis)->delete();
             return response()->json(['success' => 'Data Berhasi Dihapus']);
         }
@@ -211,11 +228,20 @@ class StudentController extends Controller
             return DataTables::of($query)->addColumn('action', function ($row) {
                 $actionBtn =
                     '
-                    <button class="btn btn-rounded btn-sm btn-info text-white info-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '"><i class="ri-eye-line"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-info text-white info-siswa-button" title="Detail Siswa" data-unique="' . $row->unique . '" data-nama="' . $row->nama . '"><i class="ri-eye-line"></i></button>
+                    <button class="btn btn-rounded btn-sm btn-info text-white histori-siswa-button" title="Hsitori Kelas" data-unique="' . $row->unique . '" data-nama="' . $row->nama . '"><i class=" ri-history-line"></i></button>
                     <button class="btn btn-rounded btn-sm btn-warning text-dark edit-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '"><i class="ri-edit-line"></i></button>
-                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-siswa-button" title="Edit Siswa" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="ri-delete-bin-line"></i></button>';
+                    <button class="btn btn-rounded btn-sm btn-danger text-white hapus-siswa-button" title="Hapus Siswa" data-unique="' . $row->unique . '" data-token="' . csrf_token() . '"><i class="ri-delete-bin-line"></i></button>';
                 return $actionBtn;
             })->make(true);
         }
+    }
+
+    public function cek_histori_kelas(Request $request)
+    {
+        $histori = DB::table('histori_kelas as a')
+            ->join('kelas as b', 'a.unique_kelas', 'b.unique')
+            ->where('unique_student', $request->unique)->get();
+        return response()->json(['data' => $histori]);
     }
 }

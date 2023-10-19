@@ -275,6 +275,42 @@ $(document).ready(function () {
             }
         });
     });
+    //DAFTAR HISTORI KELAS SISWA
+    $("#table-siswa").on("click", ".histori-siswa-button", function () {
+        const unique = $(this).attr("data-unique");
+        var nama = $(this).attr("data-nama");
+        $("#nama-siswa-modal").html(nama);
+        $.ajax({
+            data: { unique: unique },
+            url: "/historiKelas",
+            type: "GET",
+            dataType: 'json',
+            success: function (response) {
+                let hasil = '';
+                response.data.forEach((a) => {
+                    hasil += `<li class="list-group-item">KELAS <strong>${a.kelas + a.huruf}</strong></li>`
+                })
+                const histori = `
+                <div class="row mb-2 mt-2">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="header-title">Nama Siswa : ${nama}</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                            ${hasil}
+                            </ul>
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card-->
+                </div>
+                </div>
+                `;
+                $("#card-histori-siswa").html(histori);
+                $("#modal-histori-siswa").modal("show")
+            }
+        });
+    })
     //Hendler Error
     function displayErrors(errors) {
         // menghapus class 'is-invalid' dan pesan error sebelumnya

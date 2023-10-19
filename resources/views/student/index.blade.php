@@ -51,6 +51,7 @@
 <!-- /.row -->
 {{-- Modal Siswa --}}
 @include('student.modal-tambah-data')
+@include('student.modal-histori')
 <script src="/page-script/siswa.js"></script>
 @endsection
 

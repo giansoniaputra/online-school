@@ -87,7 +87,7 @@ class GenerateTagihanController extends Controller
         return DataTables::of($query)->addColumn('action', function ($row) {
             $actionBtn =
                 '
-        <button class="btn btn-rounded btn-sm btn-primary text-white generate-button" title="Generate Tagihan" data-unique="' . $row->unique . '"><i class="ri-ai-generate"></i></button>';
+        <button class="btn btn-rounded btn-sm btn-primary text-white generate-button histori-button" title="Generate Tagihan" data-unique="' . $row->unique . '"><i class="ri-ai-generate"></i></button>';
             return $actionBtn;
         })->make(true);
     }

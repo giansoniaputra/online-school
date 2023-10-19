@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\SettingTagihanController;
 use App\Http\Controllers\GenerateTagihanController;
+use App\Http\Controllers\HistoriKelasController;
 use App\Http\Controllers\JenisPembayaranController;
 use App\Http\Controllers\TagihanSiswaController;
 
@@ -38,6 +39,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 //SISWA
 Route::resource('/student', StudentController::class)->middleware('auth');
+Route::get('/historiKelas', [StudentController::class, 'cek_histori_kelas'])->middleware('auth');
 //GURU
 Route::resource('/teacher', TeacherController::class)->middleware('auth');
 //Refresh Ampuan
@@ -102,6 +104,9 @@ Route::get('/updateNominal', [SettingTagihanController::class, 'update_nominal']
 Route::get('/cekDataTagihan', [SettingTagihanController::class, 'cek_data_tagihan'])->middleware('auth');
 Route::post('/settingTagihan', [SettingTagihanController::class, 'setting_tagihan'])->middleware('auth');
 Route::get('/cariSiswa', [SettingTagihanController::class, 'cari_siswa'])->middleware('auth');
+
+//HISTORI KELAS
+Route::resource('/histori-kelas', HistoriKelasController::class)->middleware('auth');
 
 
 //DATATABLES
