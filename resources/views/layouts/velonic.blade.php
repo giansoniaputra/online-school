@@ -88,6 +88,26 @@ $tahun = TahunAjaran::where('status', '1')->first();
             background-color: rgba(0, 0, 0, 0.3);
         }
 
+        .modal-header {
+            background-color: #1A2942;
+            color: white;
+        }
+
+        .btn-close {
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .modal-body {
+            background-color: white;
+        }
+
+        .modal-body input,
+        .modal-body select,
+        .modal-body textarea {
+            border: 1px solid #1A2942 !important;
+        }
+
     </style>
     <script>
         const loader = `

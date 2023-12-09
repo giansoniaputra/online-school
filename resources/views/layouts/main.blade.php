@@ -77,6 +77,7 @@ $tahun = TahunAjaran::where('status', '1')->first();
             <div class="card d-flex justify-conten-center align-items-center card-spinner d-none">
                 <div class="spinner" style="position:relative;z-index: 101;"></div>
             </div>`
+        let stop = $("#spinner").html("")
 
     </script>
 </head>

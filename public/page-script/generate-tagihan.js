@@ -194,56 +194,48 @@ $(document).ready(function () {
         let tagihan = $("#unique_tagihan").val();
         let tahun = $("#unique-tahun-ajaran").val();
         let kelas = $("#unique_kelas").val();
+        // AMBIL SEMUA SISWA YANG DI CEKLIS
         let siswa = document.querySelectorAll('input[name="siswa[]"');
+        // TOTAL SISWA AWAL YANG DI HITUNG
         let totalSiswa = 0;
-        let completedRequests = 0;
 
         $("#spinner").html(loader)
 
         // Menghitung total siswa yang checked
         siswa.forEach((e) => {
+            // MENAMPUNG SISWA YANG DI CEKLIS KEDALAM INPUT
+            let daftarSiswa = document.querySelector('#daftar_siswa');
             if (e.checked) {
                 totalSiswa++;
+                daftarSiswa.value += `${e.value}/`;
             }
         });
-
-        siswa.forEach((e) => {
-            if (e.checked) {
-                generate(e.value, tagihan, kelas, tahun, () => {
-                    completedRequests++;
-
-                    // Semua permintaan selesai, sembunyikan loader
-                    if (completedRequests === totalSiswa) {
-                        $("#spinner").html("");
-                        Swal.fire("Good!", `Tagihan Di Generate ke ${totalSiswa} Siswa`, "success");
-                        $("#modal-tagihan-siswa").modal("hide")
-                        $("#modal-generate-tagihan").modal("show")
-                    }
-                });
-            }
-        })
-
-    })
-
-    function generate(unique_siswa, unique_tagihan, unique_kelas, unique_tahun_ajaran, callback) {
         $.ajax({
             data: {
-                unique_siswa: unique_siswa,
-                unique_tagihan: unique_tagihan,
-                unique_kelas: unique_kelas,
-                unique_tahun_ajaran: unique_tahun_ajaran,
+                unique_siswa: $("#daftar_siswa").val(),
+                unique_tagihan: tagihan,
+                unique_kelas: kelas,
+                unique_tahun_ajaran: tahun,
             },
             url: "/generateTagihan",
             type: "GET",
             dataType: 'json',
             success: function (response) {
-                console.log(response);
-                // Panggil callback setelah permintaan AJAX selesai
-                if (typeof callback === 'function') {
-                    callback();
+                // console.log(response);
+                $("#spinner").html("");
+                if (response.jumlah == 0 && response.jumlah_not != 0) {
+                    Swal.fire("Warning!", `${response.jumlah_not} Siswa Yang Dipilih Sudah Pernah Mendapat Tagihan ini Sebelumnya!`, "warning");
+                } else if (response.jumlah_not == 0 && response.jumlah != 0) {
+                    Swal.fire("Good!", `Tagihan Di Generate ke ${response.jumlah} Siswa`, "success");
+                } else {
+                    Swal.fire("Good!", `Tagihan Di Generate ke ${response.jumlah} Siswa Yang Dipilih<br>${response.jumlah_not} Siswa Yang Dipilih Sudah Pernah Mendapat Tagihan ini Sebelumnya!`, "success");
                 }
+                $("#daftar_siswa").val("")
+                $("#modal-tagihan-siswa").modal("hide")
+                $("#modal-generate-tagihan").modal("show")
             }
         });
-    }
+
+    })
 
 })

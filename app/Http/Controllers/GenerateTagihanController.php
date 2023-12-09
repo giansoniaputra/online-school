@@ -117,26 +117,32 @@ class GenerateTagihanController extends Controller
     public function generate_tagihan(Request $request)
     {
         $tagihan = explode(",", $request->unique_tagihan);
-        $siswa = $request->unique_siswa;
+        $siswas = explode("/", $request->unique_siswa);
+        array_pop($siswas);
         $tahun = $request->unique_tahun_ajaran;
-        $count = 1;
+        $count = 0;
         foreach ($tagihan as $row) {
-            $cek = GenerateTagihan::where('unique_tahun_ajaran', $tahun)
-                ->where('unique_tagihan', $row)
-                ->where('unique_siswa', $siswa)
-                ->first();
-            $data = [
-                'unique' => Str::orderedUuid(),
-                'unique_tahun_ajaran' => $tahun,
-                'unique_tagihan' => $row,
-                'unique_siswa' => $siswa,
-                'status' => 0
-            ];
-            if (!$cek) {
-                $count++;
-                GenerateTagihan::create($data);
+            foreach ($siswas as $siswa) {
+                $cek = GenerateTagihan::where('unique_tahun_ajaran', $tahun)
+                    ->where('unique_tagihan', $row)
+                    ->where('unique_siswa', $siswa)
+                    ->first();
+                if (!$cek) {
+                    $data = [
+                        'unique' => Str::orderedUuid(),
+                        'unique_tahun_ajaran' => $tahun,
+                        'unique_tagihan' => $row,
+                        'unique_siswa' => $siswa,
+                        'status' => 0
+                    ];
+                    GenerateTagihan::create($data);
+                    $count++;
+                }
             }
         }
-        return response()->json(['success' => $count]);
+        return response()->json([
+            'jumlah' => $count / count($tagihan),
+            'jumlah_not' => count($siswas) - ($count / count($tagihan))
+        ]);
     }
 }

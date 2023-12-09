@@ -14,6 +14,7 @@
                                 <input type="hidden" name="unique_tagihan" id="unique_tahun">
                                 <input type="hidden" name="unique_tagihan" id="unique_tagihan">
                                 <input type="hidden" name="unique_kelas" id="unique_kelas">
+                                <input type="hidden" name="daftar_siswa" id="daftar_siswa">
                                 <button type="button" id="button-generate" class="btn btn-primary">Generate</button>
                             </div>
                             <!-- /.card-header -->
