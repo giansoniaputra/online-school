@@ -134,9 +134,9 @@ $(document).ready(function () {
         const nominal = $(this).attr("data-nominal");
         let element = $(`#table-setting-tagihan .view-nominal-${unique}`);
         element.after(`
-        <form class="d-inline form-nominal" action="javascript:;">
+        <form class="d-flex form-nominal" action="javascript:;">
             <input type="hidden" name="unique" value="${unique}"/>
-            <input type="text" class="form-control input-autofocus money" name="nominal" style="width:20vh" value="${nominal}">
+            <input type="text" class="form-control input-autofocus money me-2" name="nominal" style="width:20vh" value="${nominal}"><button type="submit" class="btn btn-sm btn-primary">Setting</button>
         </form>
         `)
         $("input.money").simpleMoneyFormat({
