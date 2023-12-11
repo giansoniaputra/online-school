@@ -1,12 +1,14 @@
 @extends('layouts.velonic')
 @section('container-velonic')
 <style>
-    .card-hover {
+    .card-hover,
+    .kelas-baru {
         background-color: #1A2942;
         color: antiquewhite
     }
 
-    .card-hover:hover {
+    .card-hover:hover,
+    .kelas-baru:hover {
         background-color: white;
         color: #1A2942;
         cursor: pointer;
@@ -92,4 +94,5 @@
 {{-- Modal Siswa --}}
 <script src="/page-script/histori-kelas.js"></script>
 @include('histori_kelas.modal-siswa')
+@include('histori_kelas.modal-kelas')
 @endsection

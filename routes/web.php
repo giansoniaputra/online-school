@@ -107,6 +107,9 @@ Route::get('/cariSiswa', [SettingTagihanController::class, 'cari_siswa'])->middl
 
 //HISTORI KELAS
 Route::resource('/histori-kelas', HistoriKelasController::class)->middleware('auth');
+Route::get('/getKelas/{kelas:unique}', [HistoriKelasController::class, 'get_kelas'])->middleware('auth');
+Route::get('/naikKelas', [HistoriKelasController::class, 'naik_kelas'])->middleware('auth');
+Route::get('/getSiswa', [HistoriKelasController::class, 'get_siswa'])->middleware('auth');
 
 
 //DATATABLES

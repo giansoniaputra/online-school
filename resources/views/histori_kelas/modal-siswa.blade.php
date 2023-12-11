@@ -4,18 +4,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title ml-3" id="title-modal">Daftar Siswa Kelas <span id="title-kelas"></span></h5>
-                <button type="button" class="btn-close btn-close-siswa" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close-kelas btn-close-siswa" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> <!-- end modal header -->
             <div class="modal-body" style="padding:0 2em">
                 <div class="row mt-2 mb-2">
                     <div class="col-12">
                         <div class="card" style="border-radius:20px">
                             <div class="card-header" style="border-radius:20px 20px 0 0">
-                                <button type="button" id="button-generate" class="btn btn-primary">Naik Kelas</button>
+                                <button type="button" id="button-naik-kelas" class="btn btn-primary">Naik Kelas</button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <input type="hidden" id="unique_kelas">
+                                <input type="text" id="unique_siswa">
                                 <table id="table-siswa" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>

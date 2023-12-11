@@ -89,9 +89,10 @@ class StudentController extends Controller
                 'nama' => ucwords(strtolower($request->nama)),
                 'role' => 'SISWA',
             ];
+            //Masukan Data Murid
             Student::create($data);
+            // Masukan Data User Murid
             User::create($data_user);
-            //Ambil Unique Siswa Terakhir
             $last = Student::latest()->first();
             $data_histori_kelas = [
                 'unique' => Str::orderedUuid(),

@@ -25,6 +25,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'GURU',
         ]);
         $user = User::latest()->first();
+        \App\Models\User::factory()->create([
+            'unique' => Str::orderedUuid(),
+            'username' => 'harahas',
+            'nama' => 'Hamni Rahma Hasibuan',
+            'email' => 'hamnirahma@gmail.com',
+            'password' => bcrypt('admin123'),
+            'role' => 'ADMIN',
+        ]);
         \App\Models\Teacher::factory()->create([
             'unique' => $user->unique,
             'npk' => '1234567',
