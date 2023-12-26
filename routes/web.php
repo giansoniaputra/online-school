@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AbsenController;
@@ -10,12 +11,14 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AbsenAllController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\HistoriKelasController;
+use App\Http\Controllers\TagihanSiswaController;
 use App\Http\Controllers\SettingTagihanController;
 use App\Http\Controllers\GenerateTagihanController;
-use App\Http\Controllers\HistoriKelasController;
 use App\Http\Controllers\JenisPembayaranController;
-use App\Http\Controllers\TagihanSiswaController;
+use App\Http\Controllers\LaporanPresensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +53,11 @@ Route::get('/hapus_ampuan', [TeacherController::class, 'hapus_ampuan'])->middlew
 
 //MATA PELAJARAN
 Route::resource('/matpel', MatpelController::class)->middleware('auth');
+
+// WALI KELAS
+Route::resource('/wali_kelas', WaliKelasController::class)->middleware('auth');
+Route::get('/getWali', [WaliKelasController::class, 'get_wali'])->middleware('auth');
+Route::POST('/updateWaliKelas', [WaliKelasController::class, 'update_perwalian'])->middleware('auth');
 
 //ABSEN
 Route::resource('/absen', AbsenController::class)->middleware('auth');
@@ -111,6 +119,9 @@ Route::get('/getKelas/{kelas:unique}', [HistoriKelasController::class, 'get_kela
 Route::get('/naikKelas', [HistoriKelasController::class, 'naik_kelas'])->middleware('auth');
 Route::get('/getSiswa', [HistoriKelasController::class, 'get_siswa'])->middleware('auth');
 
+// LAPORAN PRESENSI
+Route::get('/laporan', [LaporanPresensiController::class, 'index'])->middleware('auth');
+Route::get('/getKelasLaporan/{unique_tahun_ajaran}', [LaporanPresensiController::class, 'get_kelas'])->middleware('auth');
 
 //DATATABLES
 Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
@@ -127,8 +138,11 @@ Route::get('/dataTablesJenisPembayaran', [JenisPembayaranController::class, 'dat
 Route::get('/dataTablesSettingTagihan', [SettingTagihanController::class, 'dataTables'])->middleware('auth');
 Route::get('/dataTablesListTagihan', [GenerateTagihanController::class, 'dataTables_list_tagihan'])->middleware('auth');
 Route::get('/dataTablesTagihanSiswaGenerate', [GenerateTagihanController::class, 'dataTables_tagihan_siswa_generate'])->middleware('auth');
+Route::get('/datatablesLaporanTahunAjaran', [LaporanPresensiController::class, 'dataTables'])->middleware('auth');
+Route::get('/datatablesLaporanPresensiAll', [LaporanPresensiController::class, 'dataTables_laporan_all'])->middleware('auth');
 
 
-Route::get('/test', function () {
-    return view('welcome');
-});
+Route::get('/test', [LaporanPresensiController::class, 'laporan']);
+
+Route::get('/generate-pdf', [LaporanPresensiController::class, 'generatePDF']);
+Route::get('/get-pdf', [LaporanPresensiController::class, 'getPDF']);

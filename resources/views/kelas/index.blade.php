@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12 mb-3">
         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal-kelas" id="btn-add-data">
-            <i class="ri-add-box-line"></i>&nbsp;<span>Tambah Siswa</span>
+            <i class="ri-add-box-line"></i>&nbsp;<span>Tambah Kelas</span>
         </button>
     </div>
     <div class="col-12">

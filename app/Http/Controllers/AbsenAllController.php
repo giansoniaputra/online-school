@@ -123,7 +123,7 @@ class AbsenAllController extends Controller
                     'student_kelas' => $row->kelas,
                     'tahun_ajaran_unique' => $request->tahun_ajaran,
                     'tanggal_absen' => $request->tanggal_absen,
-                    'kehadiran' => 'A',
+                    'kehadiran' => '',
                 ];
                 AbsenAll::create($data);
             }
@@ -136,20 +136,20 @@ class AbsenAllController extends Controller
     {
         AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "H"]);
         $siswa = Student::where('unique', $request->student_unique)->first();
-        $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
+        // $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
 
-        // Ganti dengan nomor penerima WhatsApp yang sesuai
-        $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
+        // // Ganti dengan nomor penerima WhatsApp yang sesuai
+        // $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
 
-        //Kirim pesan menggunakan Twilio
-        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-        $message = $twilio->messages->create(
-            $nomorPenerima,
-            [
-                'from' => env('TWILIO_PHONE_NUMBER'),
-                'body' => $pesan,
-            ]
-        );
+        // //Kirim pesan menggunakan Twilio
+        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        // $message = $twilio->messages->create(
+        //     $nomorPenerima,
+        //     [
+        //         'from' => env('TWILIO_PHONE_NUMBER'),
+        //         'body' => $pesan,
+        //     ]
+        // );
 
         // $sid    = "AC9f50536408fd5b310a85a471042ba5b9";
         // $token  = "ce182c5ba9a13207ac8123b91aa7c9ee";
@@ -184,26 +184,26 @@ class AbsenAllController extends Controller
     public function hadir_semua(Request $request)
     {
         AbsenAll::where('student_kelas', $request->kelas)->where('tanggal_absen', $request->tanggal)->update(['kehadiran' => "H"]);
-        $siswa = DB::table('absen_alls as a')
-            ->join('students as b', 'a.student_unique', 'b.unique')
-            ->where('student_kelas', $request->kelas)->where('tanggal_absen', $request->tanggal)
-            ->get();
-        foreach ($siswa as $row) {
-            $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$row->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal)), true);
+        // $siswa = DB::table('absen_alls as a')
+        //     ->join('students as b', 'a.student_unique', 'b.unique')
+        //     ->where('student_kelas', $request->kelas)->where('tanggal_absen', $request->tanggal)
+        //     ->get();
+        // foreach ($siswa as $row) {
+        //     $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$row->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal)), true);
 
-            // Ganti dengan nomor penerima WhatsApp yang sesuai
-            $nomorPenerima = 'whatsapp:+62' . $row->telepon_ortu;
+        //     // Ganti dengan nomor penerima WhatsApp yang sesuai
+        //     $nomorPenerima = 'whatsapp:+62' . $row->telepon_ortu;
 
-            //Kirim pesan menggunakan Twilio
-            $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-            $message = $twilio->messages->create(
-                $nomorPenerima,
-                [
-                    'from' => env('TWILIO_PHONE_NUMBER'),
-                    'body' => $pesan,
-                ]
-            );
-        }
+        //     //Kirim pesan menggunakan Twilio
+        //     $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        //     $message = $twilio->messages->create(
+        //         $nomorPenerima,
+        //         [
+        //             'from' => env('TWILIO_PHONE_NUMBER'),
+        //             'body' => $pesan,
+        //         ]
+        //     );
+        // }
         return response()->json(['success' => 'Berhasil']);
     }
 }

@@ -507,6 +507,12 @@ $tahun = TahunAjaran::where('status', '1')->first();
                 , allowClear: true
             });
         })
+        $(document).ready(function() {
+            $(".select2-perwalian").select2({
+                placeholder: "Pilih Guru"
+                , allowClear: true
+            });
+        })
 
     </script>
 

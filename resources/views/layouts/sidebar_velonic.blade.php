@@ -69,17 +69,30 @@
                     </ul>
                     <ul class="side-nav-second-level">
                         <li>
+                            <a href="/wali_kelas">Wali Kelas</a>
+                        </li>
+                    </ul>
+                    <ul class="side-nav-second-level">
+                        <li>
                             <a href="/student">Siswa</a>
                         </li>
                     </ul>
                 </div>
             </li>
             @endif
-            @if(auth()->user()->role == 'GURU' || auth()->user()->role == 'ADMIN')
+            @php
+            use App\Models\Teacher;
+            use App\Models\WaliKelas;
+            if(auth()->user()->role == 'GURU'){
+            $cek_guru = Teacher::where('NPK', auth()->user()->username)->first();
+            $cek_wali = WaliKelas::where('unique_teacher', $cek_guru->unique)->first();
+            }
+            @endphp
+            @if(auth()->user()->role != 'ADMIN')
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarPages2" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
                     <i class="ri-pages-line"></i>
-                    <span> Presensi </span>
+                    <span> Presensi Guru</span>
                     <span class="menu-arrow"></span>
                 </a>
                 @endif
@@ -91,13 +104,25 @@
                         </li>
                     </ul>
                     @endif
-                    @if(auth()->user()->role == 'ADMIN')
+                </div>
+            </li>
+            @if(auth()->user()->role != 'ADMIN' && $cek_wali)
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages3" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
+                    <i class="ri-pages-line"></i>
+                    <span> Presensi Wali Kelas</span>
+                    <span class="menu-arrow"></span>
+                </a>
+                @endif
+                <div class="collapse" id="sidebarPages3">
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="/absen_all">Absen Siswa</a>
                         </li>
+                        <li>
+                            <a href="/laporan">Laporan Presensi</a>
+                        </li>
                     </ul>
-                    @endif
                 </div>
             </li>
             @if(auth()->user()->role == 'ADMIN')

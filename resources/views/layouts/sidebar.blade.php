@@ -109,6 +109,11 @@
                     </ul>
                 </li>
                 @endif
+                @php
+                use App/Models/Teacher;
+                $cek_guru = Teacher::where('NPK', auth()->user()->username)->first();
+                $cek_wali = WaliKelas::where('unique_wali', $cek_guru)->first();
+                @endphp
                 @if(auth()->user()->role == 'ADMIN')
                 <li class="nav-item">
                     <a href="#" class="nav-link">

@@ -135,6 +135,9 @@ $(document).ready(function () {
             success: function (response) {
                 $("#spinner").html("")
                 table.ajax.reload();
+            },
+            error: function (a, b, c) {
+                console.log(a + '\n' + b + '\n' + c);
             }
         });
     })

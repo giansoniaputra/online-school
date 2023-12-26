@@ -120,7 +120,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: 'json',
             success: function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 Swal.fire({
                     title: `Anda akan menaikan siswa/i berikut ke kelas ${kelas}?`,
                     html: `<small class="text-success">Silahkan scroll kebawah!</small><br>${response.data}`,
