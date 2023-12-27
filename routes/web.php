@@ -122,6 +122,7 @@ Route::get('/getSiswa', [HistoriKelasController::class, 'get_siswa'])->middlewar
 // LAPORAN PRESENSI
 Route::get('/laporan', [LaporanPresensiController::class, 'index'])->middleware('auth');
 Route::get('/getKelasLaporan/{unique_tahun_ajaran}', [LaporanPresensiController::class, 'get_kelas'])->middleware('auth');
+Route::post('/get-laporan', [LaporanPresensiController::class, 'getPDF']);
 
 //DATATABLES
 Route::get('/datatablesSiswa', [StudentController::class, 'dataTables'])->middleware('auth');
@@ -144,5 +145,4 @@ Route::get('/datatablesLaporanPresensiAll', [LaporanPresensiController::class, '
 
 Route::get('/test', [LaporanPresensiController::class, 'laporan']);
 
-Route::get('/generate-pdf', [LaporanPresensiController::class, 'generatePDF']);
-Route::get('/get-pdf', [LaporanPresensiController::class, 'getPDF']);
+// Route::get('/generate-pdf', [LaporanPresensiController::class, 'generatePDF']);

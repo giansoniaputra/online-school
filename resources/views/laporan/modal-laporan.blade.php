@@ -12,43 +12,49 @@
                         <label class="form-label">FILTER</label>
                     </div>
                     <div class="card-body">
-                        <div class="row mt-2 mb-2">
-                            <div class="col-sm-3 mb-2">
-                                <label for="bulanan" class="form-label">Laporan Bulanan/Satu Periode</label>
-                                <select id="bulanan" class="form-select mt-2">
-                                    <option value="" selected>Pilih Bulan</option>
-                                    <option value="ALL">SATU PERIODE</option>
-                                    <option value="01">Januari</option>
-                                    <option value="02">Februari</option>
-                                    <option value="03">Maret</option>
-                                    <option value="04">April</option>
-                                    <option value="05">Mei</option>
-                                    <option value="06">Juni</option>
-                                    <option value="07">Juli</option>
-                                    <option value="08">Agustus</option>
-                                    <option value="09">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-5 mb-2">
-                                <div class="row">
-                                    <label for="tanggal_awal" class="form-label">Laporan Berdasarkan (Tanggal Awal & Tanggal Akhir)</label>
-                                    <div class="col-sm-6 mt-2">
-                                        <input type="date" class="form-control" id="tanggal_awal">
-                                    </div>
-                                    <div class="col-sm-6 mt-2">
-                                        <input type="date" class="form-control" id="tanggal_akhir">
+                        <form action="get-laporan" class="d-inline" id="form-cetak-laporan" target="_blank" method="POST">
+                            @csrf
+                            <div class="row mt-2 mb-2">
+                                <input type="hidden" id="unique_tahun_ajaran" name="unique_tahun_ajaran">
+                                <input type="hidden" id="unique_kelas" name="unique_kelas">
+                                <input type="hidden" id="hari-ini" value="0" name="hari-ini">
+                                <div class="col-sm-3 mb-2">
+                                    <label for="bulanan" class="form-label">Laporan Bulanan/Satu Periode</label>
+                                    <select id="bulanan" class="form-select mt-2" name="bulanan">
+                                        <option value="" selected>Pilih Bulan</option>
+                                        <option value="ALL">SATU PERIODE</option>
+                                        <option value="01">Januari</option>
+                                        <option value="02">Februari</option>
+                                        <option value="03">Maret</option>
+                                        <option value="04">April</option>
+                                        <option value="05">Mei</option>
+                                        <option value="06">Juni</option>
+                                        <option value="07">Juli</option>
+                                        <option value="08">Agustus</option>
+                                        <option value="09">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-5 mb-2">
+                                    <div class="row">
+                                        <label for="tanggal_awal" class="form-label">Laporan Berdasarkan (Tanggal Awal & Tanggal Akhir)</label>
+                                        <div class="col-sm-6 mt-2">
+                                            <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal">
+                                        </div>
+                                        <div class="col-sm-6 mt-2">
+                                            <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-4">
+                                    <label for="laporan-hari-ini" class="form-label d-block">Laporan Presensi Hari Ini</label>
+                                    <button type="button" class="btn btn-primary mt-2" id="laporan-hari-ini">PRESENSI HARI INI</button>
+                                    <button type="submit" class="btn btn-danger ms-2 mt-2" id="cetak-laporan-pdf">CETAK</button>
+                                </div>
                             </div>
-                            <div class="col-sm-4">
-                                <label for="laporan-hari-ini" class="form-label d-block">Laporan Presensi Hari Ini</label>
-                                <button class="btn btn-primary mt-2" id="laporan-hari-ini">PRESENSI HARI INI</button>
-                                <button class="btn btn-danger ms-2 mt-2" id="cetak-laporan-pdf">CETAK</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="row mt-2 mb-2">

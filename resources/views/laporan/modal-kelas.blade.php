@@ -15,9 +15,6 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <input type="hidden" id="unique_tahun_ajaran">
-                                <input type="hidden" id="unique_kelas">
-                                <input type="hidden" id="hari-ini" value="0">
                                 <hr>
                                 <div class="card-body">
                                     <div class="mb-3 row" id="render-kelas"></div>

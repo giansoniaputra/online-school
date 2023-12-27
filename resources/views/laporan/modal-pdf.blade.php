@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close btn-close-laporan" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> <!-- end modal header -->
             <div class="modal-body" style="padding:0 2em">
-                <iframe id="pdfFrame" width="100%" height="500px" src="{{ url('/generate-pdf') }}"></iframe>
+                <iframe id="pdfFrame" width="100%" height="650px" src=""></iframe>
             </div>
             <div class="modal-footer" id="btn-action"></div>
         </div>

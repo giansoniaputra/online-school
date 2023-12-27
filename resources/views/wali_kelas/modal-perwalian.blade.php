@@ -15,8 +15,8 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <input type="text" id="unique_perwalian">
-                                <input type="text" id="unique_kelas">
+                                <input type="hidden" id="unique_perwalian">
+                                <input type="hidden" id="unique_kelas">
                                 <input type="hidden" value="{{ csrf_token() }}" id="token">
                                 <div class="row">
                                     <div class="col-sm-12">

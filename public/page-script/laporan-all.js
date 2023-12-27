@@ -170,23 +170,10 @@ $(document).ready(function () {
     })
 
     // CEKTAK LAPORAN PDF
-    $("#cetak-laporan-pdf").on("click", function () {
+    $("form[id='form-cetak-laporan']").submit(function (a) {
         if ($("#tanggal_awal").val() == "" && $("#tanggal_akhir").val() == "" && $("#bulanan").val() == "" && $("#hari-ini").val() == "0") {
             Swal.fire("Warning!", "Silahkan Pilih Periode Pelaporan!", "warning");
-        } else {
-            $("#modal-pdf").modal('show');
-            let pdfFrame = $("#pdfFrame");
-            // Load PDF using AJAX
-            $.ajax({
-                url: '/get-pdf',
-                type: 'GET',
-                dataType: 'arraybuffer',
-                success: function (data) {
-                    var blob = new Blob([data], { type: 'application/pdf' });
-                    var pdfUrl = URL.createObjectURL(blob);
-                    pdfFrame.attr('src', pdfUrl);
-                }
-            });
+            a.preventDefault();
         }
     })
     // .DATATABLES

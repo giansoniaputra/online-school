@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Student;
+use App\Models\Teacher;
 use Twilio\Rest\Client;
 use App\Models\AbsenAll;
 use Illuminate\Support\Str;
@@ -19,10 +20,15 @@ class AbsenAllController extends Controller
      */
     public function index()
     {
+        $teacher = Teacher::where('npk', auth()->user()->username)->first();
         $data = [
             'title_page' => 'Absen Siswa',
             'title' => 'Absen Siswa',
-            'kelas' => Kelas::all()
+            'kelas' => DB::table('kelas as a')
+                ->join('wali_kelas as b', 'a.unique', '=', 'b.unique_kelas')
+                ->select('a.*', 'b.unique_teacher')
+                ->where('b.unique_teacher', $teacher->unique)
+                ->get()
         ];
         return view('absen_all.index', $data);
     }

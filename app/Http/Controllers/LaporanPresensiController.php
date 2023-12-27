@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use FPDF;
 
-class LaporanPresensiController extends PDFController
+class LaporanPresensiController extends Controller
 {
     public function index()
     {
@@ -398,22 +398,341 @@ class LaporanPresensiController extends PDFController
         return DataTables::of($query)->make(true);
     }
 
-    public function generatePDF()
+    public function getPDF(Request $request)
     {
+        // return $request->all();
+        $tanggal_awal = $request->tanggal_awal;
+        $tanggal_akhir = $request->tanggal_akhir;
+        $bulanan = $request->bulanan;
+        $unique_tahun_ajaran = $request->unique_tahun_ajaran;
+        $unique_kelas = $request->unique_kelas;
+        $hari_ini = $request->hari_ini;
         $pdf = new FPDF();
-        $pdf->AddPage();
-        $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(40, 10, 'Hello, World!');
+        $pdf->AddPage('P', 'A4');
+        //Header
+        $pdf->SetFont('Arial', 'B', 13);
+        $pdf->Cell(30);
+        $pdf->Cell(140, 5, 'SEKOLAH MENENGAH PERTAMA', 0, 1, 'C');
+
+        $pdf->SetFont('Arial', 'B', 18);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Cell(30);
+        $pdf->Cell(140, 9, 'PERSIS GANDOK', 0, 1, 'C');
+
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetTextColor(0);
+        $pdf->Cell(30);
+        $pdf->Cell(140, 5, strtoupper('jl gandok'), 0, 1, 'C');
+
+        // Menambahkan garis header
+        $pdf->SetLineWidth(1);
+        $pdf->Line(10, 36, 200, 36);
+        $pdf->SetLineWidth(0);
+        $pdf->Line(10, 37, 200, 37);
+        $pdf->Ln();
+
+        $cek_tahun = TahunAjaran::where('unique', $unique_tahun_ajaran)->first();
+        $cek_kelas = Kelas::where('unique', $unique_kelas)->first();
+        if ($request->bulanan != "") {
+            if ($bulanan == "ALL") {
+                $query = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->join('tahun_ajarans as c', 'a.tahun_ajaran_unique', '=', 'c.unique')
+                    ->select('a.student_unique')
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->distinct()
+                    ->groupBy('a.student_unique')
+                    ->get();
+                foreach ($query as $row) {
+                    $student = Student::where('unique', $row->student_unique)->first();
+                    $hadir = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'H')
+                        ->count('a.kehadiran');
+                    $sakit = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'S')
+                        ->count('a.kehadiran');
+                    $izin = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'I')
+                        ->count('a.kehadiran');
+                    $alfa = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'A')
+                        ->count('a.kehadiran');
+                    $row->nama = $student->nama;
+                    $row->hadir = $hadir;
+                    $row->alfa = $alfa;
+                    $row->sakit = $sakit;
+                    $row->izin = $izin;
+                }
+                $judul = "Periode  $cek_tahun->tahun_awal/$cek_tahun->tahun_akhir $cek_tahun->periode";
+            } else {
+                $query = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('a.student_unique')
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where(DB::raw("DATE_FORMAT(a.tanggal_absen,'%m')"), $request->bulanan)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->distinct()
+                    ->groupBy('a.student_unique')
+                    ->get();
+                foreach ($query as $row) {
+                    $student = Student::where('unique', $row->student_unique)->first();
+                    $hadir = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where(DB::raw("DATE_FORMAT(a.tanggal_absen,'%m')"), $request->bulanan)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'H')
+                        ->count('a.kehadiran');
+                    $sakit = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where(DB::raw("DATE_FORMAT(a.tanggal_absen,'%m')"), $request->bulanan)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'S')
+                        ->count('a.kehadiran');
+                    $izin = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where(DB::raw("DATE_FORMAT(a.tanggal_absen,'%m')"), $request->bulanan)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'I')
+                        ->count('a.kehadiran');
+                    $alfa = DB::table('absen_alls as a')
+                        ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                        ->select('b.nama', 'a.*')
+                        ->where('a.student_unique', $row->student_unique)
+                        ->where('a.student_kelas', $request->unique_kelas)
+                        ->where(DB::raw("DATE_FORMAT(a.tanggal_absen,'%m')"), $request->bulanan)
+                        ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                        ->where('a.kehadiran', 'A')
+                        ->count('a.kehadiran');
+                    $row->nama = $student->nama;
+                    $row->hadir = $hadir;
+                    $row->alfa = $alfa;
+                    $row->sakit = $sakit;
+                    $row->izin = $izin;
+                }
+
+                if ($bulanan == 1) {
+                    $namaBulan = "Januari";
+                } elseif ($bulanan == 2) {
+                    $namaBulan = "Februari";
+                } elseif ($bulanan == 3) {
+                    $namaBulan = "Maret";
+                } elseif ($bulanan == 4) {
+                    $namaBulan = "April";
+                } elseif ($bulanan == 5) {
+                    $namaBulan = "Mei";
+                } elseif ($bulanan == 6) {
+                    $namaBulan = "Juni";
+                } elseif ($bulanan == 7) {
+                    $namaBulan = "Juli";
+                } elseif ($bulanan == 8) {
+                    $namaBulan = "Agustus";
+                } elseif ($bulanan == 9) {
+                    $namaBulan = "September";
+                } elseif ($bulanan == 10) {
+                    $namaBulan = "Oktober";
+                } elseif ($bulanan == 11) {
+                    $namaBulan = "November";
+                } elseif ($bulanan == 12) {
+                    $namaBulan = "Desember";
+                }
+                $judul = "Bulan $namaBulan Periode $cek_tahun->tahun_awal/$cek_tahun->tahun_akhir $cek_tahun->periode";
+            }
+            $pdf->SetFont('Arial', 'B', '14');
+            $pdf->Cell(0, 16, "Laporan Presensi $judul", '0', 1, 'C');
+            $pdf->Cell(0, 2, "Kelas $cek_kelas->kelas$cek_kelas->huruf", '0', 1, 'C');
+            $pdf->Ln();
+            $pdf->Ln();
+        } else if ($request->tanggal_awal != null) {
+            $query = DB::table('absen_alls as a')
+                ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                ->select('a.student_unique')
+                ->where('a.student_kelas', $request->unique_kelas)
+                ->where('a.tanggal_absen', '>=', $request->tanggal_awal)
+                ->where('a.tanggal_absen', '<=', $request->tanggal_akhir)
+                ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                ->distinct()
+                ->groupBy('a.student_unique')
+                ->get();
+            //QUERY
+            foreach ($query as $row) {
+                $student = Student::where('unique', $row->student_unique)->first();
+                $hadir = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', '>=', $request->tanggal_awal)
+                    ->where('a.tanggal_absen', '<=', $request->tanggal_akhir)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'H')
+                    ->count('a.kehadiran');
+                $sakit = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', '>=', $request->tanggal_awal)
+                    ->where('a.tanggal_absen', '<=', $request->tanggal_akhir)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'S')
+                    ->count('a.kehadiran');
+                $izin = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', '>=', $request->tanggal_awal)
+                    ->where('a.tanggal_absen', '<=', $request->tanggal_akhir)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'I')
+                    ->count('a.kehadiran');
+                $alfa = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', '>=', $request->tanggal_awal)
+                    ->where('a.tanggal_absen', '<=', $request->tanggal_akhir)
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'A')
+                    ->count('a.kehadiran');
+                $row->nama = $student->nama;
+                $row->hadir = $hadir;
+                $row->alfa = $alfa;
+                $row->sakit = $sakit;
+                $row->izin = $izin;
+            }
+            $pdf->SetFont('Arial', 'B', '14');
+            $pdf->Cell(0, 16, "Laporan Presensi " . tanggal_hari($tanggal_awal) . " - " . tanggal_hari($tanggal_akhir), '0', 1, 'C');
+            $pdf->Cell(0, 2, "Kelas $cek_kelas->kelas$cek_kelas->huruf", '0', 1, 'C');
+            $pdf->Ln();
+            $pdf->Ln();
+        } else if ($request->hari_ini != '0') {
+            $query = DB::table('absen_alls as a')
+                ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                ->select('a.student_unique')
+                ->where('a.student_kelas', $request->unique_kelas)
+                ->where('a.tanggal_absen', date('Y-m-d', strtotime(Carbon::now())))
+                ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                ->distinct()
+                ->groupBy('a.student_unique')
+                ->get();
+            //QUERY
+            foreach ($query as $row) {
+                $student = Student::where('unique', $row->student_unique)->first();
+                $hadir = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', date('Y-m-d', strtotime(Carbon::now())))
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'H')
+                    ->count('a.kehadiran');
+                $sakit = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', date('Y-m-d', strtotime(Carbon::now())))
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'S')
+                    ->count('a.kehadiran');
+                $izin = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', date('Y-m-d', strtotime(Carbon::now())))
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'I')
+                    ->count('a.kehadiran');
+                $alfa = DB::table('absen_alls as a')
+                    ->join('students as b', 'a.student_unique', '=', 'b.unique')
+                    ->select('b.nama', 'a.*')
+                    ->where('a.student_unique', $row->student_unique)
+                    ->where('a.student_kelas', $request->unique_kelas)
+                    ->where('a.tanggal_absen', date('Y-m-d', strtotime(Carbon::now())))
+                    ->where('a.tahun_ajaran_unique', $request->unique_tahun_ajaran)
+                    ->where('a.kehadiran', 'A')
+                    ->count('a.kehadiran');
+                $row->nama = $student->nama;
+                $row->hadir = $hadir;
+                $row->alfa = $alfa;
+                $row->sakit = $sakit;
+                $row->izin = $izin;
+            }
+            $pdf->SetFont('Arial', 'B', '14');
+            $pdf->Cell(0, 16, "Laporan Presensi " . tanggal_hari(date('Y-m-d', strtotime(Carbon::now()))), '0', 1, 'C');
+            $pdf->Cell(0, 2, "Kelas $cek_kelas->kelas$cek_kelas->huruf", '0', 1, 'C');
+            $pdf->Ln();
+            $pdf->Ln();
+        }
+
+        //Membuat kolom judul tabel
+        $pdf->SetFont('Arial', '', '8');
+        $pdf->SetFillColor(9, 132, 227);
+        $pdf->SetTextColor(255);
+        $pdf->SetDrawColor(0, 0, 0);
+        $pdf->Cell(8, 7, 'No', 1, '0', 'C', true);
+        $pdf->Cell(59, 7, 'Nama Siswa', 1, '0', 'C', true);
+        $pdf->Cell(40, 7, 'Hadir', 1, '0', 'C', true);
+        $pdf->Cell(29, 7, 'Izin', 1, '0', 'C', true);
+        $pdf->Cell(29, 7, 'Sakit', 1, '0', 'C', true);
+        $pdf->Cell(27, 7, 'Alfa', 1, '0', 'C', true);
+        $pdf->Ln();
+
+        //isi data cash
+        //Membuat kolom isi tabel
+        $pdf->SetFont('Arial', '', '8');
+        $pdf->SetFillColor(224, 235, 255);
+        $pdf->SetDrawColor(0, 0, 0);
+        $pdf->SetTextColor(0);
+        $no = 1;
+        foreach ($query as $row) {
+            $pdf->Cell(8, 7, $no++, 1, '0', 'C', true);
+            $pdf->Cell(59, 7, $row->nama, 1, '0', 'C', true);
+            $pdf->Cell(40, 7, $row->hadir, 1, '0', 'C', true);
+            $pdf->Cell(29, 7, $row->izin, 1, '0', 'C', true);
+            $pdf->Cell(29, 7, $row->sakit, 1, '0', 'C', true);
+            $pdf->Cell(27, 7, $row->alfa, 1, '0', 'C', true);
+            $pdf->Ln();
+        }
+
+
 
         // Output to browser
-        $pdfContent = $pdf->Output('', 'S'); // Get PDF content as string
-
-        return response($pdfContent)->header('Content-Type', 'application/pdf');
-    }
-
-    public function getPDF()
-    {
-        $pdf = $this->generatePDF();
-        return response($pdf)->header('Content-Type', 'application/pdf');
+        $pdf->Output('Laporan Penjualan Presensi.pdf', 'I');
+        exit;
     }
 }
