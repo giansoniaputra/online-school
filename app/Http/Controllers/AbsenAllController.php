@@ -142,33 +142,33 @@ class AbsenAllController extends Controller
     {
         AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "H"]);
         $siswa = Student::where('unique', $request->student_unique)->first();
-        // $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
+        $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
 
-        // // Ganti dengan nomor penerima WhatsApp yang sesuai
-        // $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
+        // Ganti dengan nomor penerima WhatsApp yang sesuai
+        $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
 
-        // //Kirim pesan menggunakan Twilio
-        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-        // $message = $twilio->messages->create(
-        //     $nomorPenerima,
-        //     [
-        //         'from' => env('TWILIO_PHONE_NUMBER'),
-        //         'body' => $pesan,
-        //     ]
-        // );
+        //Kirim pesan menggunakan Twilio
+        $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        $message = $twilio->messages->create(
+            $nomorPenerima,
+            [
+                'from' => env('TWILIO_PHONE_NUMBER'),
+                'body' => $pesan,
+            ]
+        );
 
-        // $sid    = "AC9f50536408fd5b310a85a471042ba5b9";
-        // $token  = "ce182c5ba9a13207ac8123b91aa7c9ee";
-        // $twilio = new Client($sid, $token);
+        $sid    = "AC9f50536408fd5b310a85a471042ba5b9";
+        $token  = "ce182c5ba9a13207ac8123b91aa7c9ee";
+        $twilio = new Client($sid, $token);
 
-        // $message = $twilio->messages
-        //     ->create(
-        //         "whatsapp:+6282321634181", // to
-        //         array(
-        //             "from" => "whatsapp:+14155238886",
-        //             "body" => "Anda telah basen"
-        //         )
-        //     );
+        $message = $twilio->messages
+            ->create(
+                "whatsapp:+6282321634181", // to
+                array(
+                    "from" => "whatsapp:+14155238886",
+                    "body" => "Anda telah basen"
+                )
+            );
         return response()->json(['success' => 'Berhasil']);
     }
     public function absen_sakit(Request $request)
