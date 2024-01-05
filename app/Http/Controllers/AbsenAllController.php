@@ -156,19 +156,6 @@ class AbsenAllController extends Controller
                 'body' => $pesan,
             ]
         );
-
-        $sid    = "AC9f50536408fd5b310a85a471042ba5b9";
-        $token  = "ce182c5ba9a13207ac8123b91aa7c9ee";
-        $twilio = new Client($sid, $token);
-
-        $message = $twilio->messages
-            ->create(
-                "whatsapp:+6282321634181", // to
-                array(
-                    "from" => "whatsapp:+14155238886",
-                    "body" => "Anda telah basen"
-                )
-            );
         return response()->json(['success' => 'Berhasil']);
     }
     public function absen_sakit(Request $request)
