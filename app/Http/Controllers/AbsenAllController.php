@@ -142,7 +142,9 @@ class AbsenAllController extends Controller
     {
         AbsenAll::where('unique', $request->unique)->update(['kehadiran' => "H"]);
         $siswa = Student::where('unique', $request->student_unique)->first();
-        $pesan = "Assalamualaikum Wr. Wb. \nAyah/Bunda putra anda tercinta *$siswa->nama* telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
+        $pesan = "Assalamualaikum Wr. Wb. 
+        Ayah/Bunda putra anda tercinta *$siswa->nama*  telah Menghadiri kelas pada hari ini " . tanggal_hari(date('Y-m-d', strtotime($request->tanggal_absen)), true);
+
 
         // Ganti dengan nomor penerima WhatsApp yang sesuai
         $nomorPenerima = 'whatsapp:+62' . $siswa->telepon_ortu;
